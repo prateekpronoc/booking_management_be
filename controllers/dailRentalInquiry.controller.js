@@ -141,7 +141,7 @@ exports.searchAll = (req, res) => {
 
         // res.status(200).json(packageVehicles); 
     }).then((resp)=>{
-        console.log(resp);
+        // console.log(resp);
         returnObj.otherInfo = _.indexify(resp, 'vehiclegroup_id');
         res.status(200).json(returnObj); 
     });
@@ -186,17 +186,20 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
         totalTripDurationInHrs: 0
     });
     return new Promise((resolve) => {
+       
+
         if (checkSameDay(startDateObject.startDate, endDateObject.endDate)) {
             packageDetail.testingValue = 'Im Testing Same Day';
             return calculateSameDayRent(startDateObject, endDateObject, packageDetail).then((costConfiguration) => {
+                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost/100) + costConfiguration.cost_per_hr;
                 costConfiguration.weekEndHrs = _.round(costConfiguration.weekEndHrs, 2);
                 costConfiguration.weekDayHrs = _.round(costConfiguration.weekDayHrs, 2);
-                costConfiguration.weekendRent = _.round((costConfiguration.weekendTariff / costConfiguration.costingHr) *
+                costConfiguration.weekendRent = _.round((costConfiguration.weekendTariff ) *
                     costConfiguration.weekEndHrs);
                 // costConfiguration.totalRent += _.round(costConfiguration.weekdayRent, 2);
                 costConfiguration.noOfWeekends = _.round((costConfiguration.weekEndHrs / 24), 2);
 
-                costConfiguration.weekdayRent = _.round((costConfiguration.weekdayTariff / costConfiguration.costingHr) *
+                costConfiguration.weekdayRent = _.round((costConfiguration.cost_per_hr) *
                     costConfiguration.weekDayHrs);
                 // costConfiguration.totalRent += _.round(costConfiguration.weekdayRent, 2);
                 costConfiguration.noOfWeekday = _.round((costConfiguration.weekDayHrs / 24), 2);
@@ -205,7 +208,7 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
                 costConfiguration.totalTripDurationInHrs = _.round(costConfiguration.weekEndHrs + costConfiguration.weekDayHrs);
                 costConfiguration.totalTripDurationInDays = _.round((costConfiguration.weekEndHrs + costConfiguration
                     .weekDayHrs) / 24);
-                costConfiguration.totalFreeKms = _.round((costConfiguration.freeKm / 24) * costConfiguration.totalTripDurationInHrs,
+                costConfiguration.totalFreeKms = _.round((costConfiguration.km_per_hr) * costConfiguration.totalTripDurationInHrs,
                     2);
                 return calculateCost(startDateObject, endDateObject, costConfiguration, peakdayList);
             }).then((costConfiguration) => {
@@ -213,20 +216,24 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
             });
         } else {
             return calculateStartDayRent(startDateObject, packageDetail).then((costConfiguration) => {
+                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost/100) + costConfiguration.cost_per_hr;
                 return calculateInbetweenRent(startDateObject, endDateObject, costConfiguration);
             }).then((costConfiguration) => {
+                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost/100) + costConfiguration.cost_per_hr;
                 return calculateEndDayRent(endDateObject, costConfiguration);
 
             }).then(function (costConfiguration) {
+                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost/100) + costConfiguration.cost_per_hr;
                 costConfiguration.weekEndHrs = _.round(costConfiguration.weekEndHrs, 2);
                 costConfiguration.weekDayHrs = _.round(costConfiguration.weekDayHrs, 2);
-                costConfiguration.weekendRent = _.round((costConfiguration.weekendTariff / costConfiguration.costingHr) *
+                costConfiguration.weekendRent = _.round((costConfiguration.weekendTariff ) *
                     costConfiguration.weekEndHrs);
                 // costConfiguration.totalRent += _.round(costConfiguration.weekdayRent, 2);
                 costConfiguration.noOfWeekends = _.round((costConfiguration.weekEndHrs / 24), 2);
 
-                costConfiguration.weekdayRent = _.round((costConfiguration.weekdayTariff / costConfiguration.costingHr) *
+                costConfiguration.weekdayRent = _.round((costConfiguration.cost_per_hr) *
                     costConfiguration.weekDayHrs);
+                    console.log( costConfiguration.weekendTariff);
                 // costConfiguration.totalRent += _.round(costConfiguration.weekdayRent, 2);
                 costConfiguration.noOfWeekday = _.round((costConfiguration.weekDayHrs / 24), 2);
                 costConfiguration.totalRent = _.round((costConfiguration.weekendRent + costConfiguration.weekdayRent));
@@ -234,7 +241,7 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
                 costConfiguration.totalTripDurationInHrs = _.round(costConfiguration.weekEndHrs + costConfiguration.weekDayHrs);
                 costConfiguration.totalTripDurationInDays = _.round((costConfiguration.weekEndHrs + costConfiguration
                     .weekDayHrs) / 24);
-                costConfiguration.totalFreeKms = _.round((costConfiguration.freeKm / 24) * costConfiguration.totalTripDurationInHrs,
+                costConfiguration.totalFreeKms = _.round((costConfiguration.km_per_hr) * costConfiguration.totalTripDurationInHrs,
                     2);
 
 
@@ -533,7 +540,7 @@ function calculateCost(startDateObject, endDateObject, costConfiguration, peakda
         28 / 100));
     costConfiguration.totalTripDurationInHrs = _.round(costConfiguration.weekEndHrs + costConfiguration.weekDayHrs);
     costConfiguration.extraFreeKm = costConfiguration.extraFreeKm || 0;
-    costConfiguration.totalFreeKms = (costConfiguration.freeKm / 24) * costConfiguration.totalTripDurationInHrs;
+    costConfiguration.totalFreeKms = (costConfiguration.km_per_hr) * costConfiguration.totalTripDurationInHrs;
     costConfiguration.totalFreeKms = _.round(costConfiguration.totalFreeKms) + costConfiguration.extraFreeKm;
     costConfiguration.taxAmount = _.round(costConfiguration.totalRentWithoutTax * 28 / 100);
     costConfiguration.bookingLineItems = [];
