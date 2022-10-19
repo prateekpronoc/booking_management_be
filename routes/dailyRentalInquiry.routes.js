@@ -24,5 +24,5 @@ module.exports = app => {
     // // Delete all Tutorials
     // router.delete("/", tutorials.deleteAll);
   
-     app.use('/api/vch/v1/rc/dailyRentalInquiry', router);
+     app.use('/booking_be/api/vch/v1/rc/dailyRentalInquiry', router);
   };
