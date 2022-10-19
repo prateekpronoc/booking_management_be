@@ -42,6 +42,32 @@ exports.findOne = (req, res) => {
 
 };
 
+exports.fetchAllRentalPackages = (req,res)=>{
+    let vehiclegroupid = req.body.vehiclegroupid;
+    let offset = 0, limit = 10000;
+    (db.rentalPackage).findAndCountAll({ limit, offset }, {where : {
+        id: {
+          [Op.in]: vehiclegroupid
+        }
+      }})
+    .then(data => {
+        const returnObj = {
+            count: data.count,
+            next: offset + 1,
+            previous: offset - 1,
+            results: data.rows
+        };
+        res.status(200).json(returnObj);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message:
+                err.message || "Some error occurred while retrieving tutorials."
+        });
+    });
+    // res.status(200).json('all is well');
+}
+
 exports.searchAll = (req, res) => {
 
     var returnObj = {},

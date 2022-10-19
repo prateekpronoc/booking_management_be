@@ -8,6 +8,8 @@ module.exports = app => {
   
     // Retrieve all Tutorials
     router.post("/", dailyRentalInquiry.searchAll);
+
+    router.post("/rentalpackage", dailyRentalInquiry.fetchAllRentalPackages);
   
     // // Retrieve all published Tutorials
     // router.get("/published", tutorials.findAllPublished);
