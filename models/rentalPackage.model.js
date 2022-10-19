@@ -44,6 +44,11 @@ module.exports = (sequelize, Sequelize) => {
 			type: DataTypes.STRING,
             field : 'km_per_hr'
 		},
+		vehiclegroup_id: {
+			allowNull: true,
+			type: DataTypes.INTEGER,
+            field : 'vehiclegroup_id'
+		},
       
     },{
         timestamps : false
