@@ -1,8 +1,8 @@
 module.exports = {
-    HOST: "139.59.57.10",
-    USER: "superadmin",
-    PASSWORD: "tech.hp!",
-    DB: "mobility_management",
+    HOST: "65.2.123.114",
+    USER: "devuser",
+    PASSWORD: "D3vus3R@2022#",
+    DB: "mobility_core",
     dialect: "mysql",
     pool: {
       max: 5,

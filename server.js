@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "*"
 };
 
 const db = require("./models");
@@ -33,7 +33,7 @@ console.log('123123');
 
 require('./routes/customer.routes')(app);
 require('./routes/dailyRentalInquiry.routes')(app);
-
+require('./routes/selfDriveBooking.routes')(app); 
 // set port, listen for requests
 const PORT = process.env.PORT || 9091;
 app.listen(PORT, () => {

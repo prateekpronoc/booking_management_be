@@ -21,5 +21,6 @@ db.sequelize = sequelize;
 
 // db.customer = require('./customer.model.js')(sequelize, Sequelize);
 db.dailRentalInquiry = require(`./dailyRentalInquiry.model.js`)(sequelize,Sequelize);
+db.vehicles = require(`./vehicle.model.js`)(sequelize,Sequelize);
 
 module.exports = db;
