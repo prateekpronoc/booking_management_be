@@ -10,6 +10,8 @@ module.exports = app => {
     router.post("/", dailyRentalInquiry.searchAll);
 
     router.post("/rentalpackage", dailyRentalInquiry.fetchAllRentalPackages);
+
+    router.post('/rentaldetails', dailyRentalInquiry.fetchRentalDetails);
   
     // // Retrieve all published Tutorials
     // router.get("/published", tutorials.findAllPublished);

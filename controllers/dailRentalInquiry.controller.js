@@ -47,29 +47,31 @@ exports.findOne = (req, res) => {
 
 };
 
-exports.fetchAllRentalPackages = (req,res)=>{
+exports.fetchAllRentalPackages = (req, res) => {
     let vehiclegroupid = req.body.vehiclegroupid;
     let offset = 0, limit = 10000;
-    (db.rentalPackage).findAndCountAll({ limit, offset }, {where : {
-        id: {
-          [Op.in]: vehiclegroupid
+    (db.rentalPackage).findAndCountAll({ limit, offset }, {
+        where: {
+            id: {
+                [Op.in]: vehiclegroupid
+            }
         }
-      }})
-    .then(data => {
-        const returnObj = {
-            count: data.count,
-            next: offset + 1,
-            previous: offset - 1,
-            results: data.rows
-        };
-        res.status(200).json(returnObj);
     })
-    .catch(err => {
-        res.status(500).send({
-            message:
-                err.message || "Some error occurred while retrieving tutorials."
+        .then(data => {
+            const returnObj = {
+                count: data.count,
+                next: offset + 1,
+                previous: offset - 1,
+                results: data.rows
+            };
+            res.status(200).json(returnObj);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving tutorials."
+            });
         });
-    });
     // res.status(200).json('all is well');
 }
 
@@ -106,65 +108,108 @@ exports.searchAll = (req, res) => {
 
     // console.log(sequelize.query,dt)
     var busyOnes = [];
-    doStuff(queryStr,dt).then((resp)=>{
+    doStuff(queryStr, dt).then((resp) => {
         busyOnes = _.map(resp, 'vehicleId');
         // res.status(200).json(busyOnes); 
 
-        return  (db.vehicles).findAndCountAll();
-    }).then((response)=>{
+        return (db.vehicles).findAndCountAll();
+    }).then((response) => {
         var availableVehicles = _.difference(_.map(response.rows, 'id'), busyOnes);
         var filteredVehicles = _.filter(response.rows, (val) => {
             if (_.indexOf(availableVehicles, val.id) > -1) {
                 return val;
             }
         });
-        returnObj.vehicleList = _.uniqBy(filteredVehicles, 'vehiclegroup_id');
-        let groupIds = _.map(filteredVehicles,'vehiclegroup_id');
-        console.log(groupIds);
-        let offset = 0, limit = 10000;
-        return  (db.rentalPackage).findAll({ limit, offset }, {where : {
+        return res.status(200).json(filteredVehicles);
+        return;
+        // returnObj.vehicleList = _.uniqBy(filteredVehicles, 'vehiclegroup_id');
+        // let groupIds = _.map(filteredVehicles,'vehiclegroup_id');
+        // console.log(groupIds);
+        // let offset = 0, limit = 10000;
+        // return  (db.rentalPackage).findAll({ limit, offset }, {where : {
+        //     id: {
+        //       [Op.in]: groupIds
+        //     }
+        //   }})
+    });
+
+    // .then((response)=>{
+    //     // console.log(response[0]);
+    //     packageVehicles = _.indexify(response, 'id', 'vehiclegroup_id');
+    //    let  packageDetails = response;
+
+    //    return Promise.all(_.map(response, (result) => {
+    //     return calculateTripCost(result.dataValues, startDateObject, endDateObject,[]).then((resp) => {
+    //         resp.vehiclegroup_id = packageVehicles[result.id];
+    //         return Promise.resolve(result);
+    //     });
+    // }));
+
+    //     // res.status(200).json(packageVehicles); 
+    // }).then((resp)=>{
+    //     // console.log(resp);
+    //     returnObj.otherInfo = _.indexify(resp, 'vehiclegroup_id');
+    //     res.status(200).json(returnObj); 
+    // });
+
+}
+
+exports.fetchRentalDetails = (req, res) => {
+    let offset = 0, limit = 10000;
+    var returnObj = {},
+        peakdayList;
+    var packageVehicles;
+    var startDateObject = {
+        startDate: moment(req.body.startDate).format('YYYY-MM-DD'),
+        startTime: moment(req.body.startDate).format('HH:mm')
+    },
+        endDateObject = {
+            endDate: moment(req.body.endDate).format('YYYY-MM-DD'),
+            endTime: moment(req.body.endDate).format('HH:mm')
+        };
+    return (db.rentalPackage).findAll({ limit, offset }, {
+        where: {
             id: {
-              [Op.in]: groupIds
+                [Op.in]: req.body.groupIds
             }
-          }})
-    }).then((response)=>{
-        // console.log(response[0]);
+        }
+    }).then((response) => {
         packageVehicles = _.indexify(response, 'id', 'vehiclegroup_id');
-       let  packageDetails = response;
+        let packageDetails = response;
 
-       return Promise.all(_.map(response, (result) => {
-        return calculateTripCost(result.dataValues, startDateObject, endDateObject,[]).then((resp) => {
-            resp.vehiclegroup_id = packageVehicles[result.id];
-            return Promise.resolve(result);
-        });
-    }));
+        return Promise.all(_.map(response, (result) => {
+            return calculateTripCost(result.dataValues, startDateObject, endDateObject, []).then((resp) => {
+                resp.vehiclegroup_id = packageVehicles[result.id];
+                return Promise.resolve(result);
+            });
+        }));
 
-        // res.status(200).json(packageVehicles); 
+        // res.status(200).json(resp);
     }).then((resp)=>{
         // console.log(resp);
         returnObj.otherInfo = _.indexify(resp, 'vehiclegroup_id');
         res.status(200).json(returnObj); 
     });
-   
+
 }
 
 
 
-async function doStuff(queryString,dt) {
-  try {
-    const msg = await sequelize.query(
-        queryString,
-        {
-           replacements: dt,
-          type: QueryTypes.SELECT
-        }
-      );
-    // console.log(msg)
-    return msg;
-  } catch (error) {
-    console.error(error)
-  }
-  console.log("Outside")
+async function doStuff(queryString, dt) {
+    try {
+        const msg = await sequelize.query(
+            queryString,
+            {
+                replacements: dt,
+                type: QueryTypes.SELECT
+            }
+        );
+        // console.log(msg)
+        return msg;
+    } catch (error) {
+        console.error(error)
+    }
+    console.log("Outside")
 }
 
 
@@ -186,15 +231,15 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
         totalTripDurationInHrs: 0
     });
     return new Promise((resolve) => {
-       
+
 
         if (checkSameDay(startDateObject.startDate, endDateObject.endDate)) {
             packageDetail.testingValue = 'Im Testing Same Day';
             return calculateSameDayRent(startDateObject, endDateObject, packageDetail).then((costConfiguration) => {
-                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost/100) + costConfiguration.cost_per_hr;
+                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
                 costConfiguration.weekEndHrs = _.round(costConfiguration.weekEndHrs, 2);
                 costConfiguration.weekDayHrs = _.round(costConfiguration.weekDayHrs, 2);
-                costConfiguration.weekendRent = _.round((costConfiguration.weekendTariff ) *
+                costConfiguration.weekendRent = _.round((costConfiguration.weekendTariff) *
                     costConfiguration.weekEndHrs);
                 // costConfiguration.totalRent += _.round(costConfiguration.weekdayRent, 2);
                 costConfiguration.noOfWeekends = _.round((costConfiguration.weekEndHrs / 24), 2);
@@ -216,24 +261,24 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
             });
         } else {
             return calculateStartDayRent(startDateObject, packageDetail).then((costConfiguration) => {
-                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost/100) + costConfiguration.cost_per_hr;
+                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
                 return calculateInbetweenRent(startDateObject, endDateObject, costConfiguration);
             }).then((costConfiguration) => {
-                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost/100) + costConfiguration.cost_per_hr;
+                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
                 return calculateEndDayRent(endDateObject, costConfiguration);
 
             }).then(function (costConfiguration) {
-                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost/100) + costConfiguration.cost_per_hr;
+                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
                 costConfiguration.weekEndHrs = _.round(costConfiguration.weekEndHrs, 2);
                 costConfiguration.weekDayHrs = _.round(costConfiguration.weekDayHrs, 2);
-                costConfiguration.weekendRent = _.round((costConfiguration.weekendTariff ) *
+                costConfiguration.weekendRent = _.round((costConfiguration.weekendTariff) *
                     costConfiguration.weekEndHrs);
                 // costConfiguration.totalRent += _.round(costConfiguration.weekdayRent, 2);
                 costConfiguration.noOfWeekends = _.round((costConfiguration.weekEndHrs / 24), 2);
 
                 costConfiguration.weekdayRent = _.round((costConfiguration.cost_per_hr) *
                     costConfiguration.weekDayHrs);
-                    console.log( costConfiguration.weekendTariff);
+                console.log(costConfiguration.weekendTariff);
                 // costConfiguration.totalRent += _.round(costConfiguration.weekdayRent, 2);
                 costConfiguration.noOfWeekday = _.round((costConfiguration.weekDayHrs / 24), 2);
                 costConfiguration.totalRent = _.round((costConfiguration.weekendRent + costConfiguration.weekdayRent));
