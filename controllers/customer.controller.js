@@ -1,5 +1,5 @@
 const db = require("../models");
-console.log(db.customer);
+// console.log(db.customer);
 // const Tutorial = db.tutorials;
 const Op = db.Sequelize.Op;
 

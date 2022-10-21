@@ -64,14 +64,10 @@ async function doStuff(queryString, dt) {
 
 
 exports.rentcalculator = (req,res)=>{
-     (db.rentalPackage).findAll({
-        where: {
-            vehiclegroup_id: {
-                [Op.in]: req.body.groupIds
-            }
-        }
-    }).then((resp)=>{
+    
+     (db.rentalPackage).findAll().then((resp)=>{
         res.status(200).json(resp);
     })
+
     
 }
