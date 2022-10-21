@@ -29,6 +29,13 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to Booking System." });
 });
 
+app.use(function(req, res, next){
+    req.setTimeout(500000, function(){
+        // call back function is called when request timed out.
+    });
+    next();
+});
+
 console.log('123123');
 
 require('./routes/customer.routes')(app);
