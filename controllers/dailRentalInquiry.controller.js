@@ -256,7 +256,7 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
                     .weekDayHrs) / 24);
                 costConfiguration.totalFreeKms = _.round((costConfiguration.km_per_hr) * costConfiguration.totalTripDurationInHrs,
                     2);
-                return calculateCost(startDateObject, endDateObject, costConfiguration, peakdayList);
+                return calculateCost(startDateObject, endDateObject, costConfiguration, []);
             }).then((costConfiguration) => {
                 resolve(costConfiguration);
             });
@@ -291,7 +291,7 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
                     2);
 
 
-                return calculateCost(startDateObject, endDateObject, costConfiguration, peakdayList).then(function (costConfiguration) {
+                return calculateCost(startDateObject, endDateObject, costConfiguration, []).then(function (costConfiguration) {
                     costConfiguration.testingValue = 'Im Testing Not Same Day';
                     resolve(costConfiguration);
                 });
@@ -485,51 +485,51 @@ function calculateCost(startDateObject, endDateObject, costConfiguration, peakda
     costConfiguration.normalWeekendRent = costConfiguration.weekendRent;
 
 
-    if (peakdayList.length > 0) {
-        peakdayList = _.maxBy(peakdayList, 'charges'); //peakdayList[peakdayList.length - 1];
+    // if (peakdayList.length > 0) {
+    //     peakdayList = _.maxBy(peakdayList, 'charges'); //peakdayList[peakdayList.length - 1];
 
-        //Conditon 1 : if peak start date is between booking start and end date
-        //condition 2 : if peak end date is between booking start and end date
-        //condition 3 : if booking start and end date between peak start date and end date
-        //console.log(costConfiguration);
-        //console.log(peakdayList);
-        if (moment(peakdayList.startDate).isBetween(pStartDate, pEndDate, undefined,
-            '[]')) {
-            //   console.log(1);
-            costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.charges);
-            costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.charges);
+    //     //Conditon 1 : if peak start date is between booking start and end date
+    //     //condition 2 : if peak end date is between booking start and end date
+    //     //condition 3 : if booking start and end date between peak start date and end date
+    //     //console.log(costConfiguration);
+    //     //console.log(peakdayList);
+    //     if (moment(peakdayList.startDate).isBetween(pStartDate, pEndDate, undefined,
+    //         '[]')) {
+    //         //   console.log(1);
+    //         costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.charges);
+    //         costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.charges);
 
-            costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
-        } else if (moment(peakdayList.endDate).isBetween(pStartDate, pEndDate, undefined,
-            '[]')) {
-            var endDiff = moment(pEndDate).diff(peakdayList.endDate, 'hours');
-            var startDiff = moment(peakdayList.endDate).diff(pStartDate, 'hours');
+    //         costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
+    //     } else if (moment(peakdayList.endDate).isBetween(pStartDate, pEndDate, undefined,
+    //         '[]')) {
+    //         var endDiff = moment(pEndDate).diff(peakdayList.endDate, 'hours');
+    //         var startDiff = moment(peakdayList.endDate).diff(pStartDate, 'hours');
 
-            if (startDiff >= 18 && endDiff <= 24) {
-                //console.log('In between!!!');
-                costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.charges);
-                costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.charges);
-                costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
-            }
-        } else if (moment(pStartDate).isBetween(moment(peakdayList.startDate), moment(peakdayList.endDate), undefined,
-            '[]') && moment(pEndDate).isBetween(moment(peakdayList.startDate), moment(peakdayList.endDate), undefined,
-                '[]')) {
-            // console.log(3);
-            costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.charges);
-            costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.charges);
-            costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
-        } else {
-            // console.log('Others!!!!');
-            costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.charges);
-            costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.charges);
-            costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
-        }
-
-
+    //         if (startDiff >= 18 && endDiff <= 24) {
+    //             //console.log('In between!!!');
+    //             costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.charges);
+    //             costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.charges);
+    //             costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
+    //         }
+    //     } else if (moment(pStartDate).isBetween(moment(peakdayList.startDate), moment(peakdayList.endDate), undefined,
+    //         '[]') && moment(pEndDate).isBetween(moment(peakdayList.startDate), moment(peakdayList.endDate), undefined,
+    //             '[]')) {
+    //         // console.log(3);
+    //         costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.charges);
+    //         costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.charges);
+    //         costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
+    //     } else {
+    //         // console.log('Others!!!!');
+    //         costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.charges);
+    //         costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.charges);
+    //         costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
+    //     }
 
 
 
-    }
+
+
+    // }
 
     //In between
     // if (moment('2021-01-26').isBetween(pStartDate, pEndDate, undefined,
