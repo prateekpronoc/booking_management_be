@@ -61,3 +61,17 @@ async function doStuff(queryString, dt) {
     }
     console.log("Outside")
 }
+
+
+exports.rentcalculator = (req,res)=>{
+    return (db.rentalPackage).findAll({
+        where: {
+            vehiclegroup_id: {
+                [Op.in]: req.body.groupIds
+            }
+        }
+    }).then((resp)=>{
+        res.status(200).json(resp);
+    })
+    
+}
