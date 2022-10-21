@@ -167,13 +167,14 @@ exports.fetchRentalDetails = (req, res) => {
             endDate: moment(req.body.endDate).format('YYYY-MM-DD'),
             endTime: moment(req.body.endDate).format('HH:mm')
         };
-    return (db.rentalPackage).findAll({ limit, offset }, {
+    return (db.rentalPackage).findAll({
         where: {
-            id: {
+            vehiclegroup_id: {
                 [Op.in]: req.body.groupIds
             }
         }
     }).then((response) => {
+        console.log(response);
         packageVehicles = _.indexify(response, 'id', 'vehiclegroup_id');
         let packageDetails = response;
 
