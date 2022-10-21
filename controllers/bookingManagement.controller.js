@@ -64,7 +64,7 @@ async function doStuff(queryString, dt) {
 
 
 exports.rentcalculator = (req,res)=>{
-    return (db.rentalPackage).findAll({
+     (db.rentalPackage).findAll({
         where: {
             vehiclegroup_id: {
                 [Op.in]: req.body.groupIds
