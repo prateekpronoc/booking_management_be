@@ -1,5 +1,5 @@
 module.exports = app => {
-    const dailyRentalInquiry = require('../controllers/dailRentalInquiry.controller.js')
+    const bookingManagementCtrl = require('../controllers/bookingManagement.controller.js');
   
     var router = require("express").Router();
   
@@ -7,11 +7,7 @@ module.exports = app => {
     // router.post("/", tutorials.create);
   
     // Retrieve all Tutorials
-    router.post("/", dailyRentalInquiry.searchAll);
-
-    router.post("/rentalpackage", dailyRentalInquiry.fetchAllRentalPackages);
-
-    router.post('/rentaldetails',dailyRentalInquiry.fetchRentalDetails);
+    router.post("/availabilitysearch", bookingManagementCtrl.availabilitySearch);
   
     // // Retrieve all published Tutorials
     // router.get("/published", tutorials.findAllPublished);
@@ -28,5 +24,5 @@ module.exports = app => {
     // // Delete all Tutorials
     // router.delete("/", tutorials.deleteAll);
   
-     app.use('/booking_be/api/vch/v1/s/dailyRentalInquiry', router);
+     app.use('/booking_be/', router);
   };
