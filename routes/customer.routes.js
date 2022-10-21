@@ -7,13 +7,14 @@ module.exports = app => {
     // router.post("/", tutorials.create);
   
     // Retrieve all Tutorials
-    router.get("/", customer.findAll);
+    router.get("/search", customer.searchData);
   
     // // Retrieve all published Tutorials
     // router.get("/published", tutorials.findAllPublished);
   
     // // Retrieve a single Tutorial with id
-    // router.get("/:id", tutorials.findOne);
+    router.get("/:name", customer.findOneByName);
+    
   
     // // Update a Tutorial with id
     // router.put("/:id", tutorials.update);
@@ -24,5 +25,5 @@ module.exports = app => {
     // // Delete all Tutorials
     // router.delete("/", tutorials.deleteAll);
   
-     app.use('/api/customers', router);
+     app.use('/booking_be/customers', router);
   };

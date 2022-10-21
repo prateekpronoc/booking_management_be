@@ -42,6 +42,7 @@ require('./routes/customer.routes')(app);
 require('./routes/dailyRentalInquiry.routes')(app);
 require('./routes/selfDriveBooking.routes')(app); 
 require('./routes/bookingManagement.routes')(app);
+require('./routes/fleetBooking.routes')(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 9091;
 app.listen(PORT, () => {

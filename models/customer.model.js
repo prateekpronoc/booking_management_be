@@ -13,6 +13,21 @@ module.exports = (sequelize, Sequelize) => {
 			allowNull: false,
 			type: DataTypes.STRING,
             field : 'name'
+		},
+        customer_uuid: {
+			allowNull: false,
+			type: DataTypes.STRING,
+            field : 'customer_uuid'
+		},
+        contact_no: {
+			allowNull: false,
+			type: DataTypes.STRING,
+            field : 'contact_no'
+		},
+        contact_email: {
+			allowNull: false,
+			type: DataTypes.STRING,
+            field : 'contact_email'
 		}
     },{
         timestamps : false
