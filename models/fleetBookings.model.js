@@ -198,7 +198,16 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.STRING,
             field: 'status'
         },
-
+        customerName: {
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'customer_name'
+        },
+        customerContactNo: {
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'customer_contact_no'
+        },
 
         createdBy: {
             allowNull: true,
