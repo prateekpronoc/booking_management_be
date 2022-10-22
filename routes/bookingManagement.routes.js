@@ -10,6 +10,8 @@ module.exports = app => {
     router.post("/availabilitysearch", bookingManagementCtrl.availabilitySearch);
 
     router.post("/rentaldetails", bookingManagementCtrl.rentcalculator);
+
+     // router.get("/:id", tutorials.findOne);
   
     // // Retrieve all published Tutorials
     // router.get("/published", tutorials.findAllPublished);

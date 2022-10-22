@@ -8,6 +8,8 @@ module.exports = app => {
   
     // Retrieve all Tutorials
     router.get("/", fleetBookingCtrl.findAll);
+
+    router.get("/:id", fleetBookingCtrl.findOne);
   
     // // // Retrieve all published Tutorials
     // // router.get("/published", tutorials.findAllPublished);
