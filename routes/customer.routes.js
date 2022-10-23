@@ -15,6 +15,7 @@ module.exports = app => {
     // // Retrieve a single Tutorial with id
     router.get("/:name", customer.findOneByName);
     
+    router.get('/name/:name',customer.searchByName);
   
     // // Update a Tutorial with id
     // router.put("/:id", tutorials.update);
