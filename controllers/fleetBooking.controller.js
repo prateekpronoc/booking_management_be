@@ -35,7 +35,7 @@ exports.create = (req, res) => {
 };
 
 exports.update= (req,res)=>{
-    updateBooking(req,res).then((resp)=>{
+   return updateBooking(req,res).then((resp)=>{
         if(resp){
             res.status(200).send({
             message: "Booking was updated successfully.",
@@ -44,7 +44,7 @@ exports.update= (req,res)=>{
         }else{
 
         }
-    })
+    });
 }
 
 async function updateBooking(req, res) {
