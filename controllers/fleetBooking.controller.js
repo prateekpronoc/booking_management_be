@@ -69,14 +69,14 @@ async function updateBooking(req, res) {
 }
 
 exports.findAll = (req, res) => {
-    const limit = req.query.pageSize ? +(req.query.pageSize) : 10;
+    const limit = req.query.pageSize ? +(req.query.pageSize) : 20;
 	// const offset = const limit = size ? +size : 3;
 	const offset = req.query.page ? req.query.page * limit : 0;
-    (db.fleetBooking).findAndCountAll({ limit, offset })
+    (db.fleetBooking).findAndCountAll({ limit:limit, offset : offset ,order:[['id','DESC']]})
         .then(data => {
             const returnObj = {
                 count: data.count,
-                next: offset + 1,
+                next: data.count>= limit ? 0: offset + 1,
                 previous: offset - 1,
                 results: data.rows
             };
