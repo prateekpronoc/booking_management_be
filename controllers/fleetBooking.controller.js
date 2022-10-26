@@ -48,23 +48,23 @@ exports.update= (req,res)=>{
 }
 
 async function updateBooking(req, res) {
-    const id = getIdParam(req);
+    // const id = getIdParam(req);
 
 	// We only accept an UPDATE request if the `:id` param matches the body `id`
-	if (req.body.id === id) {
+	// if (req.body.id === id) {
 	var fleetBooking	=await (db.fleetBooking).update(req.body, {
 			where: {
-				id: id
+				id: req.body.id
 			}
 		});
         return fleetBooking;
 		// res.status(200).send({
         //     message: "Booking was updated successfully."
         //   });
-	} else {
+	// } else {
         
-		res.status(400).send(`Bad request: param ID (${id}) does not match body ID (${req.body.id}).`);
-	}
+	// 	res.status(400).send(`Bad request: param ID (${id}) does not match body ID (${req.body.id}).`);
+	// }
 }
 
 exports.findAll = (req, res) => {

@@ -19,7 +19,7 @@ module.exports = app => {
     
   
     // // Update a Tutorial with id
-    router.post("/update/:id", fleetBookingCtrl.update);
+    router.post("/update", fleetBookingCtrl.update);
   
     // // Delete a Tutorial with id
     // router.delete("/:id", tutorials.delete);
