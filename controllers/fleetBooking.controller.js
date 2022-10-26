@@ -1,6 +1,7 @@
 const db = require("../models");
 var _ = require('../startup/load-lodash')();
 var moment = require('moment');
+const { getIdParam } = require('./helper');
 // console.log(db.customer);
 const Tutorial = db.customer;
 const Op = db.Sequelize.Op;
@@ -16,7 +17,6 @@ exports.create = (req, res) => {
         } else {
             code = 'WCBLRINQ' + resp.id;
         }
-        console.log(req.body);
         return (db.fleetBooking).create(req.body)
         // res.status(200).json(code);
     }).then((resp) => {
@@ -32,10 +32,40 @@ exports.create = (req, res) => {
     //   }
     //   return config.Promise.resolve(code);
     // });
-
-
-
 };
+
+exports.update= (req,res)=>{
+    updateBooking(req,res).then((resp)=>{
+        if(resp){
+            res.status(200).send({
+            message: "Booking was updated successfully.",
+            data : resp
+          });
+        }else{
+
+        }
+    })
+}
+
+async function updateBooking(req, res) {
+    const id = getIdParam(req);
+
+	// We only accept an UPDATE request if the `:id` param matches the body `id`
+	if (req.body.id === id) {
+	var fleetBooking	=await (db.fleetBooking).update(req.body, {
+			where: {
+				id: id
+			}
+		});
+        return fleetBooking;
+		// res.status(200).send({
+        //     message: "Booking was updated successfully."
+        //   });
+	} else {
+        
+		res.status(400).send(`Bad request: param ID (${id}) does not match body ID (${req.body.id}).`);
+	}
+}
 
 exports.findAll = (req, res) => {
     const limit = req.query.pageSize ? +(req.query.pageSize) : 10;
