@@ -17,10 +17,11 @@ exports.create = (req, res) => {
         } else {
             code = 'WCBLRINQ' + resp.id;
         }
+        req.body.inquiryCode = code;
         return (db.fleetBooking).create(req.body)
         // res.status(200).json(code);
     }).then((resp) => {
-        res.status(200).json(code);
+        res.status(200).json(resp);
     });
 
     // return config.svc.commonCreateEntity({body: { createdAt: date},user: req.user,key: entity}, req).then((seq) => {
