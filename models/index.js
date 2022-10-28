@@ -27,4 +27,5 @@ db.fleetBookingSeq = require(`./fleetBookingSeq.model.js`)(sequelize,Sequelize);
 db.fleetBooking = require(`./fleetBookings.model.js`)(sequelize,Sequelize);
 db.bookingPayments = require(`./bookingPayments.model.js`)(sequelize,Sequelize);
 db.bookingTripStartInfo = require(`./bookingTripStartInfo.model`)(sequelize,Sequelize);
+db.bookingTripEndInfo = require(`./bookingTripEndInfo.model`)(sequelize,Sequelize);
 module.exports = db;
