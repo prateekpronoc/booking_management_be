@@ -44,6 +44,7 @@ require('./routes/selfDriveBooking.routes')(app);
 require('./routes/bookingManagement.routes')(app);
 require('./routes/fleetBooking.routes')(app);
 require('./routes/bookingPayment.routes')(app);
+require('./routes/bookingTripStartInfo.routes')(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 9091;
 app.listen(PORT, () => {
