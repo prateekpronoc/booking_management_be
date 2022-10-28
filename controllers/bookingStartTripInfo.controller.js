@@ -32,10 +32,33 @@ exports.findAll = (req, res) => {
 exports.create = (req, res) => {
 	req.body.paymentUuid = crypto.randomBytes(20).toString('hex');
 	return (db.bookingTripStartInfo).create(req.body).then((resp) => {
-        
+        updateBookingTable(req.body);
         res.status(200).json(resp);
     });
 };
+
+function updateBookingTable(data){
+    db.fleetBooking.update({initialOdometer: data.odometerReading}, {
+        where: { id: data.bookingId }
+      }) .then(num => {
+        //   if (num) {
+        //     res.status(200).json({
+        //       msg: "Data was updated successfully.",
+        //       data: req.body
+        //     });
+        //   } else {
+        //     res.status(201).json({
+        //       msg: `Cannot update Data with id=${id}. Maybe Tutorial was not found or req.body is empty!`
+        //     });
+        //   }
+        })
+        .catch(err => {
+          console.log(err);
+        //   res.status(500).send({
+        //     msg: "Error updating Data with id=" + id
+        //   });
+        });
+}
 
 exports.update = (req,res)=>{
     const id = req.params.id;
@@ -44,6 +67,7 @@ exports.update = (req,res)=>{
       where: { id: id }
     }) .then(num => {
         if (num) {
+            updateBookingTable(req.body);  
           res.status(200).json({
             msg: "Data was updated successfully.",
             data: req.body
