@@ -30,7 +30,7 @@ exports.findAll = (req, res) => {
 };
 
 exports.create = (req, res) => {
-	req.body.paymentUuid = crypto.randomUUID()
+	req.body.paymentUuid = crypto.randomBytes(20).toString('hex');
 	return (db.bookingPayments).create(req.body).then((resp) => {
         res.status(200).json(resp);
     });
