@@ -228,6 +228,16 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
             type: `TIMESTAMP`,
             field: 'created_on'
+        },
+        initialOdometer: {
+            allowNull: true,
+            type: DataTypes.DOUBLE,
+            field: 'initial_odometer'
+        },
+        finalOdometer: {
+            allowNull: true,
+            type: DataTypes.DOUBLE,
+            field: 'final_odometer'
         }
     }, {
         timestamps: false
