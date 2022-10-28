@@ -46,7 +46,7 @@ exports.update = (req,res)=>{
         if (num) {
           res.status(200).json({
             msg: "Data was updated successfully.",
-            data: rq.body
+            data: req.body
           });
         } else {
           res.status(201).json({
@@ -55,6 +55,7 @@ exports.update = (req,res)=>{
         }
       })
       .catch(err => {
+        console.log(err);
         res.status(500).send({
           msg: "Error updating Data with id=" + id
         });
