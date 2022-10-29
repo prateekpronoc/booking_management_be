@@ -74,6 +74,16 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
             type: `TIMESTAMP`,
             field: 'created_on'
+        },
+        transactionId :{
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'transaction_id'
+        },
+        paymentRemark : {
+            allowNull : true,
+            type : DataTypes.STRING,
+            field: 'payment_remark'
         }
     }, {
         timestamps: false

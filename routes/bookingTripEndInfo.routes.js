@@ -14,7 +14,7 @@ module.exports = app => {
     router.get("/:bookingId", bookingTripEndCtrl.findOneByBookingId);
   
     // // // // Retrieve all published Tutorials
-    // router.get("/published", tutorials.findAllPublished);
+    // router.get("/published", bookingTripEndCtrl.testMethod);
   
     // // // // Retrieve a single Tutorial with id
     // // router.get("/:name", customer.findOneByName);

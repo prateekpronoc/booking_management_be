@@ -84,9 +84,16 @@ async function searchBookingTripEndDetails(whereCondition){
     return dataSet;
 }
 
+
+async function testMethod(req,res){
+    let resp = await (db.bookingTripEndInfo).findAll().catch(error => {return 'null';});;
+    res.status(200).json({msg:'success',data: resp!=null ? resp: {}})
+}
+
+
 // module.exports ={
-//     findAll
-// }
+//     testMethod
+// };
 
 
 
