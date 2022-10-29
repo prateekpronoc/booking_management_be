@@ -12,7 +12,7 @@ module.exports = app => {
     // router.get("/:id", fleetBookingCtrl.findOne);
   
     // // // // Retrieve all published Tutorials
-    // router.get("/published", tutorials.findAllPublished);
+    router.get("/:bookingId", bookingPaymentCtrl.findAllByBookingId);
   
     // // // // Retrieve a single Tutorial with id
     // // router.get("/:name", customer.findOneByName);

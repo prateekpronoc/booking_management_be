@@ -36,6 +36,12 @@ exports.create = (req, res) => {
     });
 };
 
+exports.findAllByBookingId= (req,res)=>{
+    return (db.bookingPayments).findAndCountAll({where:{bookingId: req.params.bookingId}}).then((resp)=>{
+        res.status(200).send(resp);
+    })
+}
+
 // module.exports ={
 //     findAll
 // }
