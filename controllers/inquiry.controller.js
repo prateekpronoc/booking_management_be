@@ -26,15 +26,7 @@ async function saveInquiry(req, res) {
             const inquiry = await (db.fleetBooking).create(req.body,{transaction});
 
             
-            
-            // const user = await User.create({
-            //     name: 'Van Helsing'
-            // }, { transaction });
-
-            // await ShippingAddress.create({
-            //     address: 'Transylvania',
-            //     user_id: user.id
-            // }, { transaction });
+    
 
             return res.status(200).send(inquiry);
         });

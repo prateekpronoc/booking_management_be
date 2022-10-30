@@ -1,5 +1,6 @@
 module.exports = app => {
     const fleetBookingCtrl = require('../controllers/fleetBooking.controller.js');
+    const fleetBookingManagementCtrl = require('../controllers/fleetBookingManagement.controller');
   
     var router = require("express").Router();
   
@@ -20,6 +21,8 @@ module.exports = app => {
   
     // // Update a Tutorial with id
     router.post("/update", fleetBookingCtrl.update);
+
+    router.post('/initiate-booking', fleetBookingManagementCtrl.initiateBooking);
   
     // // Delete a Tutorial with id
     // router.delete("/:id", tutorials.delete);
