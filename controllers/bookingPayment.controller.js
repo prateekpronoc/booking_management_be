@@ -42,28 +42,30 @@ const crypto = require('crypto');
 //     })
 // }
 
-async function savePaymentDetails(req, res){
-    req.body.paymentUuid = crypto.randomBytes(20).toString('hex');
-    const bookingPayment = await (db.bookingPayments).create(req.body, { transaction :transactional});
+async function savePaymentDetails(req, res) {
+    await (db.sequelize).transaction(async function (transactional) {
+        req.body.paymentUuid = crypto.randomBytes(20).toString('hex');
+        const bookingPayment = await (db.bookingPayments).create(req.body, { transaction: transactional });
 
-    if(_.has(req.body,'changeStatus') && req.body.changeStatus){
-        const bookingData = await (db.fleetBooking).update({status:'Pending'},
-            {
-                where: {
-                    id: req.body.bookingId
-                }
-            },{transaction:transactional});
-    }
+        if (_.has(req.body, 'changeStatus') && req.body.changeStatus) {
+            const bookingData = await (db.fleetBooking).update({ status: 'Pending' },
+                {
+                    where: {
+                        id: req.body.bookingId
+                    }
+                }, { transaction: transactional });
+        }
 
-    return res.status(200).send(bookingPayment);
+        return res.status(200).send(bookingPayment);
+    });
 }
 
-async function findAllByBookingId(req, res){
-    const paymentData = await (db.bookingPayments).findAndCountAll({where:{bookingId: req.params.bookingId}});
+async function findAllByBookingId(req, res) {
+    const paymentData = await (db.bookingPayments).findAndCountAll({ where: { bookingId: req.params.bookingId } });
     res.status(200).send(paymentData);
 }
 
-module.exports ={
+module.exports = {
     findAllByBookingId,
     savePaymentDetails
 }
