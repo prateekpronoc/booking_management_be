@@ -7,7 +7,7 @@ module.exports = app => {
     router.post("/", bookingPaymentCtrl.create);
   
     // Retrieve all Tutorials
-    router.get("/", bookingPaymentCtrl.findAll);
+    // router.get("/", bookingPaymentCtrl.findAll);
 
     // router.get("/:id", fleetBookingCtrl.findOne);
   
