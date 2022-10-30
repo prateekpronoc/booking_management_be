@@ -4,7 +4,7 @@ module.exports = app => {
     var router = require("express").Router();
   
     // Create a new Tutorial
-    router.post("/", bookingPaymentCtrl.create);
+    router.post("/", bookingPaymentCtrl.savePaymentDetails);
   
     // Retrieve all Tutorials
     // router.get("/", bookingPaymentCtrl.findAll);

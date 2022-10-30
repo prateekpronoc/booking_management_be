@@ -42,9 +42,9 @@ const crypto = require('crypto');
 //     })
 // }
 
-async function create(req, res){
+async function savePaymentDetails(req, res){
     req.body.paymentUuid = crypto.randomBytes(20).toString('hex');
-    const bookingPayment = await (db.bookingPayments).create({ created_on: date }, { transaction :transactional});
+    const bookingPayment = await (db.bookingPayments).create(req.body, { transaction :transactional});
 
     if(_.has(req.body,'changeStatus') && req.body.changeStatus){
         const bookingData = await (db.fleetBooking).update({status:'Pending'},
@@ -65,7 +65,7 @@ async function findAllByBookingId(req, res){
 
 module.exports ={
     findAllByBookingId,
-    create
+    savePaymentDetails
 }
 
 
