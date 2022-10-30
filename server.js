@@ -48,6 +48,7 @@ require('./routes/bookingTripStartInfo.routes')(app);
 require('./routes/bookingTripEndInfo.routes')(app);
 require('./routes/inquiry.routes')(app);
 require('./routes/bookingLineItems.routes')(app);
+require('./routes/bookingRefunds.routes')(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 9091;
 app.listen(PORT, () => {
