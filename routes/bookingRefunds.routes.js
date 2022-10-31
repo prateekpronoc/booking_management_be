@@ -1,13 +1,13 @@
 module.exports = app => {
-    const bookingLineItemsCtrl = require('../controllers/bookingRefund.controller');
+    const actionCtrl = require('../controllers/bookingRefund.controller');
   
     var router = require("express").Router();
   
     // Create a new Tutorial
-    router.post("/initiateRefund", bookingLineItemsCtrl.initiateRefund);
+    router.post("/initiateRefund", actionCtrl.initiateRefund);
   
     // Retrieve all Tutorials
-    router.get("/", bookingLineItemsCtrl.findAllWithCount);
+    router.get("/", actionCtrl.findAllWithCount);
 
     // router.get("/:id", fleetBookingCtrl.findOne);
   
@@ -26,6 +26,8 @@ module.exports = app => {
   
     // // Delete all Tutorials
     // router.delete("/", tutorials.deleteAll);
+
+    router.post('/approverefund', actionCtrl.approveRefunds)
   
      app.use('/booking_be/bookingrefunds', router);
   };
