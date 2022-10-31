@@ -5,7 +5,10 @@ module.exports = app => {
   
     // Create a new Tutorial
     router.post("/", inquiryCtrl.saveInquiry);
+
+    router.get('/:customerId', inquiryCtrl.fetchBookingByCustomerId);
   
   
      app.use('/booking_be/booking-inquiry', router);
+
   };
