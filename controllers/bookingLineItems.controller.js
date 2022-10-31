@@ -55,7 +55,7 @@ async function saveData(req, res) {
 
 async function findAllByBookingId(req, res) {
 
-    const dataSet = await (db.bookingLineItem).findOne(
+    const dataSet = await (db.bookingLineItem).findAndCountAll(
         {
             where:
             {
