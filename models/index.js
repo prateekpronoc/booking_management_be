@@ -31,4 +31,5 @@ db.bookingTripEndInfo = require(`./bookingTripEndInfo.model`)(sequelize,Sequeliz
 db.bookingLineItem = require(`./bookingLineItems.model`)(sequelize,Sequelize);
 db.bookingSeq = require(`./bookingSeq.model`)(sequelize,Sequelize);
 db.bookingRefund = require(`./bookingRefund.model`)(sequelize,Sequelize);
+db.bookingExtension = require(`./bookingExtensions.model`)(sequelize,Sequelize);
 module.exports = db;
