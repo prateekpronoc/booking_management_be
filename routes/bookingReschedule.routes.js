@@ -4,6 +4,8 @@ module.exports = app => {
     var router = require("express").Router();
     
     router.post('/', actionCtrl.saveData);
+
+    router.get(`/bookingid/:bookingId/`,actionCtrl.findByBookingId);
    
     // router.post('/savebookingextension', actionCtrl.extensionRequestRentalDetails);
     // savebookingextension

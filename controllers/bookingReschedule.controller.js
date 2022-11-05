@@ -44,9 +44,23 @@ async function findOneByBookingId(req, res) {
     res.status(200).json({ msg: 'success', data: dataSet != null ? dataSet : {} });
 }
 
+async function findByBookingId(req, res) {
+    let whereCondition = { bookingId: req.params.bookingId };
+    const dataSet = await (db.bookingReschedules).findAll({ where: whereCondition }).catch(error => {
+        return res.status(500).send({
+            // conso.log()
+            message:
+                error.message || "Some error occurred while retrieving data."
+        });
+    });
+    res.status(200).json({ msg: 'success', data: dataSet != null ? dataSet : {} });
+}
+
+
 module.exports = {
     saveData,
-    findOneByBookingId
+    findOneByBookingId,
+    findByBookingId
 }
 
 

@@ -60,10 +60,10 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.DATE,
             field: 'current_endDate'
         },
-        new_endDate: {
+        newendDate: {
             allowNull: true,
-            type: DataTypes.DOUBLE,
-            field: 'newEndDate'
+            type: DataTypes.DATE,
+            field: 'new_endDate'
         },
         createdBy: {
             allowNull: true,
@@ -84,17 +84,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
             type: `TIMESTAMP`,
             field: 'created_on'
-        },
-        startDate: {
-            allowNull: true,
-            type: DataTypes.DATE,
-            field: 'start_date'
-        },
-        endDate: {
-            allowNull: true,
-            type: DataTypes.DATE,
-            field: 'end_date'
-        },
+        }
     }, {
         timestamps: false
     });
