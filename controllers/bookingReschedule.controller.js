@@ -7,11 +7,10 @@ const crypto = require('crypto');
 
 
 async function saveData(req, res) {
-    // return res.status(200).send(req.body);
-    console.log(req.body);
+
     await (db.sequelize).transaction(async function (transactional) {
 
-        const extensionDatails = await (db.bookingExtension).create(req.body, { transaction: transactional });
+        const reschduleDetails = await (db.bookingReschedules).create(req.body, { transaction: transactional });
 
         const bookingUpdateObject = req.body.bookingObject;
         // bookingUpdateObject.endDate = req.body.endDate;
@@ -27,16 +26,16 @@ async function saveData(req, res) {
 
         // TODO: Update Vehicle Odometer Reading.....
 
-        return res.status(200).send(extensionDatails);
+        return res.status(200).send(reschduleDetails);
     });
 }
 
 
 
-async function findByBookingId(req, res) {
+async function findOneByBookingId(req, res) {
     let bookingId = req.params.bookingId;
     let whereCondition = { bookingId: req.params.bookingId }
-    const dataSet = await (db.bookingExtension).findAll({ where: whereCondition }).catch(error => {
+    const dataSet = await (db.bookingReschedules).findOne({ where: whereCondition }).catch(error => {
         return res.status(500).send({
             message:
                 err.message || "Some error occurred while retrieving data."
@@ -47,7 +46,7 @@ async function findByBookingId(req, res) {
 
 module.exports = {
     saveData,
-    findByBookingId
+    findOneByBookingId
 }
 
 

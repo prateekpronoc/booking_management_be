@@ -34,4 +34,6 @@ db.bookingRefund = require(`./bookingRefund.model`)(sequelize,Sequelize);
 db.bookingExtension = require(`./bookingExtensions.model`)(sequelize,Sequelize);
 db.cancellationPolicies = require(`./cancellationPolicies.model`)(sequelize,Sequelize);
 db.cancelledBookings =require(`./cancelledBookings.model`)(sequelize,Sequelize);
+db.bookingReschedules = require(`./bookingReschedule.model`)(sequelize,Sequelize);
+
 module.exports = db;
