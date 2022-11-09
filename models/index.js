@@ -35,5 +35,8 @@ db.bookingExtension = require(`./bookingExtensions.model`)(sequelize,Sequelize);
 db.cancellationPolicies = require(`./cancellationPolicies.model`)(sequelize,Sequelize);
 db.cancelledBookings =require(`./cancelledBookings.model`)(sequelize,Sequelize);
 db.bookingReschedules = require(`./bookingReschedule.model`)(sequelize,Sequelize);
+db.documents = require(`./documents.model`)(sequelize,Sequelize);
+db.peakSeasonsRental = require(`./peakSeasons.model`)(sequelize,Sequelize);
+db.userAttendance = require(`./userAttendance.model`)(sequelize,Sequelize);
 
 module.exports = db;

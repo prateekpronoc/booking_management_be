@@ -54,6 +54,11 @@ require('./routes/bookingExtension.routes')(app);
 require('./routes/cancellationPolicies.routes')(app);
 require('./routes/cancelBookings.routes')(app);
 require('./routes/bookingReschedule.routes')(app);
+require('./routes/documents.routes')(app);
+require('./routes/peakSeasons.routes')(app);
+require('./routes/userAttendance.routes')(app);
+
+
 // set port, listen for requests
 const PORT = process.env.PORT || 9091;
 app.listen(PORT, () => {

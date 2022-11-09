@@ -1,55 +1,41 @@
 
-const { DataTypes } = require('sequelize');
 
+const { DataTypes } = require('sequelize');
+const crypto = require('crypto');
 
 module.exports = (sequelize, Sequelize) => {
-    const documents = sequelize.define("documents", {
+    const dataModel = sequelize.define("user_attendances", {
         id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
             type: DataTypes.INTEGER
         },
+        userAttendanceuuid: {
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'user_attendanceuuid'
+        },
         name: {
             allowNull: true,
             type: DataTypes.STRING,
             field: 'name'
         },
-        docUuid: {
+        contactNo: {
             allowNull: true,
             type: DataTypes.STRING,
-            field: 'doc_uuid'
+            field: 'contact_no'
         },
-        resourceId: {
-            allowNull: true,
-            type: DataTypes.BIGINT,
-            field: 'resource_id'
-        },
-        resourceType: {
+        contactEmail: {
             allowNull: true,
             type: DataTypes.STRING,
-            field: 'resource_type'
-        },
-        documentType: {
-            allowNull: true,
-            type: DataTypes.BIGINT,
-            field: 'document_type'
+            field: 'contact_email'
         },
 
-        doucumnetTypeText: {
+        deviceId: {
             allowNull: true,
             type: DataTypes.STRING,
-            field: 'doucumnet_type_text'
-        },
-        identificationNo: {
-            allowNull: true,
-            type: DataTypes.STRING,
-            field: 'identification_no'
-        },
-        description: {
-            allowNull: true,
-            type: DataTypes.STRING,
-            field: 'description'
+            field: 'device_id'
         },
         fileName: {
             allowNull: true,
@@ -61,27 +47,21 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.STRING,
             field: 'file_path'
         },
-        startDate: {
+        markedDate: {
             allowNull: true,
             type: DataTypes.DATE,
-            field: 'start_date'
+            field: 'marked_date'
         },
-        endDate: {
+        tenantId: {
             allowNull: true,
-            type: DataTypes.DATE,
-            field: 'end_date'
+            type: DataTypes.BIGINT,
+            field: 'tenant_id'
         },
-       
-        // `is_archived` tinyint(1) DEFAULT '0',
-        isExpired: {
+        userId: {
             allowNull: true,
-            type: DataTypes.TINYINT,
-            field: 'is_expired'
+            type: DataTypes.BIGINT,
+            field: 'user_id'
         },
-        // `is_file_removed` tinyint(1) DEFAULT '0',
-       
-        // `vendor_id` bigint(20) DEFAULT '0',
-       
         createdBy: {
             allowNull: true,
             type: DataTypes.BIGINT,
@@ -106,9 +86,12 @@ module.exports = (sequelize, Sequelize) => {
         timestamps: false
     });
 
-    return documents;
+    dataModel.beforeCreate(async (entity, options) => {
+        const userAttendanceuuid = crypto.randomBytes(20).toString('hex');
+        entity.userAttendanceuuid = userAttendanceuuid;
+    });
+    return dataModel;
 };
-
 
 
 
