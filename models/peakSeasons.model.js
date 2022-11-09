@@ -9,6 +9,11 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             type: DataTypes.INTEGER
         },
+        name: {
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'name'
+        },
         peakSeasonuuid: {
             allowNull: true,
             type: DataTypes.STRING,
