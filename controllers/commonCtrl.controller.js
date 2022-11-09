@@ -10,17 +10,32 @@ const getdbKey = require('../common/get-db-key');
 
 //Create
 async function saveData(req, res) {
-    var dbKey = await getdbKey(req.baseUrl,req.config)();
-    await (db.sequelize).transaction(async function (transactional) {
-        // req.body.docUuid = crypto.randomBytes(20).toString('hex');
-        const entityDetails = await (db[dbKey]).create(req.body, { transaction: transactional });
-        res.status(200).send({ status: 'success', entity: entityDetails });
-    });
+    var dbKey = await getdbKey(req.baseUrl, req.config)();
+
+    if (req.body && !_.has(req.body, 'id')) {
+        await (db.sequelize).transaction(async function (transactional) {
+            // req.body.docUuid = crypto.randomBytes(20).toString('hex');
+            const entityDetails = await (db[dbKey]).create(req.body, { transaction: transactional });
+            res.status(200).send({ status: 'success', entity: entityDetails });
+        });
+    } else {
+        await (db.sequelize).transaction(async function (transactional) {
+            const entityUpdateObject = await (db[dbKey]).update(req.body, {
+                where: {
+                    id: req.body.id
+                }
+            }, { transaction: transactional });
+            res.status(200).json({
+                status: "success",
+                entity: req.body
+            });
+        });
+    }
 
 }
 
-async function getEntityById(req,res){
-    var dbKey = await getdbKey(req.baseUrl,req.config)();
+async function getEntityById(req, res) {
+    var dbKey = await getdbKey(req.baseUrl, req.config)();
     await (db.sequelize).transaction(async function (transactional) {
         // req.body.docUuid = crypto.randomBytes(20).toString('hex');
         const entityDetails = await (db[dbKey]).findByPk(req.params.id, { transaction: transactional });
@@ -45,7 +60,7 @@ async function fetchAllResourceType(req, res, next) {
 
 //Get All with Paging
 async function findAllWithPaging(req, res) {
-    var dbKey = await getdbKey(req.baseUrl,req.config)();
+    var dbKey = await getdbKey(req.baseUrl, req.config)();
     const limit = req.query.limit ? +(req.query.limit) : 10;
     // const offset = const limit = size ? +size : 3;
     const offset = req.query.offset ? req.query.offset * limit : 0;
