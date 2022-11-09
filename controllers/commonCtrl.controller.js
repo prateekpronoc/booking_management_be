@@ -7,6 +7,8 @@ const crypto = require('crypto');
 const getAll = require('../common/get-all');
 const createEnity = require('../common/create-entity');
 const getdbKey = require('../common/get-db-key');
+
+//Create
 async function saveData(req, res) {
     var dbKey = await getdbKey(req.baseUrl,req.config)();
     await (db.sequelize).transaction(async function (transactional) {
@@ -15,6 +17,15 @@ async function saveData(req, res) {
         res.status(200).send({ status: 'success', entity: entityDetails });
     });
 
+}
+
+async function getEntityById(req,res){
+    var dbKey = await getdbKey(req.baseUrl,req.config)();
+    await (db.sequelize).transaction(async function (transactional) {
+        // req.body.docUuid = crypto.randomBytes(20).toString('hex');
+        const entityDetails = await (db[dbKey]).findByPk(req.params.id, { transaction: transactional });
+        res.status(200).send({ status: 'success', entity: entityDetails });
+    });
 }
 
 
@@ -32,6 +43,7 @@ async function fetchAllResourceType(req, res, next) {
     res.status(200).json({ msg: 'success', data: dataSet != null ? dataSet : {} });
 }
 
+//Get All with Paging
 async function findAllWithPaging(req, res) {
     var dbKey = await getdbKey(req.baseUrl,req.config)();
     const limit = req.query.limit ? +(req.query.limit) : 10;
@@ -64,7 +76,8 @@ async function test(req, res, next) {
 
 module.exports = {
     saveData,
-    findAllWithPaging
+    findAllWithPaging,
+    getEntityById
 }
 
 

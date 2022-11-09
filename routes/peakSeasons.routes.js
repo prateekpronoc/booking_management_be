@@ -6,7 +6,9 @@ module.exports = app => {
     
     router.post('/', commonCtrl.saveData);
 
-    router.get('/', commonCtrl.findAllWithPaging)
+    router.get('/', commonCtrl.findAllWithPaging);
+
+    router.get('/:id', commonCtrl.getEntityById);
   
      app.use('/booking_be/peakseasons', router);
   };
