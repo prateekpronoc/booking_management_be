@@ -19,6 +19,7 @@
   "homepage": "https://github.com/prateekpronoc/booking_management_be#readme",
   "dependencies": {
     "bluebird": "^3.7.2",
+    "config": "^3.3.8",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "lodash": "^4.17.21",

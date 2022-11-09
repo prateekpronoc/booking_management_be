@@ -62,6 +62,21 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.BIGINT,
             field: 'user_id'
         },
+        lat: {
+            allowNull: true,
+            type: DataTypes.DOUBLE,
+            field: 'lat'
+        },
+        lang: {
+            allowNull: true,
+            type: DataTypes.DOUBLE,
+            field: 'lang'
+        },
+        addressText: {
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'address_text'
+        },
         createdBy: {
             allowNull: true,
             type: DataTypes.BIGINT,

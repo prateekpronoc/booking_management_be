@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-
-const app = express();
+const config = require('config');const app = express();
 
 var corsOptions = {
   origin: "*"
@@ -29,14 +28,22 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to Booking System." });
 });
 
-app.use(function(req, res, next){
-    req.setTimeout(500000, function(){
-        // call back function is called when request timed out.
-    });
-    next();
-});
 
-console.log('123123');
+
+config.modelKeys = require('./data-config/data-model.json').modelTables;
+
+app.use(function(req, res, next){
+  
+
+  // Assign the config to the req object
+  req.config = config;
+  
+
+  req.setTimeout(500000, function(){
+      // call back function is called when request timed out.
+  });
+  next();
+});
 
 require('./routes/customer.routes')(app);
 require('./routes/dailyRentalInquiry.routes')(app);
@@ -57,6 +64,8 @@ require('./routes/bookingReschedule.routes')(app);
 require('./routes/documents.routes')(app);
 require('./routes/peakSeasons.routes')(app);
 require('./routes/userAttendance.routes')(app);
+
+
 
 
 // set port, listen for requests
