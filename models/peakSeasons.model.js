@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-
+const crypto = require('crypto');
 
 module.exports = (sequelize, Sequelize) => {
     const dataModel = sequelize.define("peak_seasons", {
@@ -67,6 +67,10 @@ module.exports = (sequelize, Sequelize) => {
         }
     }, {
         timestamps: false
+    });
+
+    dataModel.beforeCreate(async (entity, options) => {
+        entity.peakSeasonuuid = crypto.randomBytes(20).toString('hex');
     });
 
     return dataModel;

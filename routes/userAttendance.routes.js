@@ -3,7 +3,7 @@ module.exports = app => {
 
     var router = require("express").Router();
     
-    router.post('/:key', actionCtrl.saveData);
+    router.post('/', actionCtrl.saveData);
 
     router.get('/', actionCtrl.findAllWithPaging)
   

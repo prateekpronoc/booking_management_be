@@ -31,6 +31,7 @@ app.get("/", (req, res) => {
 
 
 config.modelKeys = require('./data-config/data-model.json').modelTables;
+// config.crypto = crypto;
 
 app.use(function(req, res, next){
   

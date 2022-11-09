@@ -6,9 +6,14 @@ const Op = db.Sequelize.Op;
 const crypto = require('crypto');
 const getAll = require('../common/get-all');
 const createEnity = require('../common/create-entity');
+const getdbKey = require('../common/get-db-key');
 async function saveData(req, res) {
-
-    createEnity(_, db, req.params.key)(req, res);
+    var dbKey = await getdbKey(req.baseUrl,req.config)();
+    await (db.sequelize).transaction(async function (transactional) {
+        // req.body.docUuid = crypto.randomBytes(20).toString('hex');
+        const entityDetails = await (db[dbKey]).create(req.body, { transaction: transactional });
+        res.status(200).send({ status: 'success', entity: entityDetails });
+    });
 
 }
 
@@ -28,15 +33,11 @@ async function fetchAllResourceType(req, res, next) {
 }
 
 async function findAllWithPaging(req, res) {
-   
-    var pathArray = req.baseUrl.split('/');
-    var key = pathArray[2];
-    console.log(req.config.modelKeys[key]);
-    // getAll(_,db,req.params.key)(req,res);
+    var dbKey = await getdbKey(req.baseUrl,req.config)();
     const limit = req.query.limit ? +(req.query.limit) : 10;
     // const offset = const limit = size ? +size : 3;
     const offset = req.query.offset ? req.query.offset * limit : 0;
-    const data = await (db[req.config.modelKeys[key]]).findAndCountAll({
+    const data = await (db[dbKey]).findAndCountAll({
         limit, offset, order: [
             // Will escape title and validate DESC against a list of valid direction parameters
             ['createdOn', 'DESC']]

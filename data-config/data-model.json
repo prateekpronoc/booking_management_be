@@ -1,5 +1,6 @@
 {
     "modelTables": {
-        "userattendance": "userAttendance"
+        "userattendance": "userAttendance",
+        "peakseasons" :"peakSeasonsRental"
     }
 }
