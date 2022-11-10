@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const config = require('config');const app = express();
+const config = require('config'); const app = express();
 
 var corsOptions = {
   origin: "*"
@@ -33,22 +33,32 @@ app.get("/", (req, res) => {
 config.modelKeys = require('./data-config/data-model.json').modelTables;
 // config.crypto = crypto;
 
-app.use(function(req, res, next){
-  
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+  res.header('Access-Control-Expose-Headers', 'Content-Length');
+  res.header('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, X-Requested-With, Range');
+
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  } else {
+    return next();
+  }
 
   // Assign the config to the req object
   req.config = config;
-  
 
-  req.setTimeout(500000, function(){
-      // call back function is called when request timed out.
+
+  req.setTimeout(500000, function () {
+    // call back function is called when request timed out.
   });
   next();
 });
 
 require('./routes/customer.routes')(app);
 require('./routes/dailyRentalInquiry.routes')(app);
-require('./routes/selfDriveBooking.routes')(app); 
+require('./routes/selfDriveBooking.routes')(app);
 require('./routes/bookingManagement.routes')(app);
 require('./routes/fleetBooking.routes')(app);
 require('./routes/bookingPayment.routes')(app);
