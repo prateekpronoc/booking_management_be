@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/prateekpronoc/booking_management_be#readme",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "bluebird": "^3.7.2",
     "config": "^3.3.8",
     "cors": "^2.8.5",
@@ -26,6 +27,7 @@
     "moment": "^2.29.4",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.20",
+    "require-dir": "^1.2.0",
     "sequelize": "^6.25.2"
   }
 }

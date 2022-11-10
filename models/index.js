@@ -1,5 +1,5 @@
 const dbConfig = require("../config/db.config.js");
-
+const requireDir = require('require-dir');
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
@@ -38,5 +38,10 @@ db.bookingReschedules = require(`./bookingReschedule.model`)(sequelize,Sequelize
 db.documents = require(`./documents.model`)(sequelize,Sequelize);
 db.peakSeasonsRental = require(`./peakSeasons.model`)(sequelize,Sequelize);
 db.userAttendance = require(`./userAttendance.model`)(sequelize,Sequelize);
+require(`./tenants.model`)(sequelize,Sequelize,db);
+
+require('../auth/models/users.model')(sequelize,Sequelize,db);
+
+
 
 module.exports = db;

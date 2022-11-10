@@ -65,8 +65,8 @@ require('./routes/bookingReschedule.routes')(app);
 require('./routes/documents.routes')(app);
 require('./routes/peakSeasons.routes')(app);
 require('./routes/userAttendance.routes')(app);
-
-
+require('./routes/tenants.routes')(app);
+require('./routes/auth/auth.routes')(app);
 
 
 // set port, listen for requests
