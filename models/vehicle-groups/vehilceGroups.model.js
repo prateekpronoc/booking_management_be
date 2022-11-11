@@ -51,7 +51,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         vehicleModel: {
             allowNull: true,
-            type: DataTypes.INTEGER,
+            type: DataTypes.BIGINT,
             field: 'vehicle_model'
         },
         profilePhotoUrl: {
