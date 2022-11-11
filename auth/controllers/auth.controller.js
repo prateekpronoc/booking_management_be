@@ -6,13 +6,22 @@ exports.userAuth = (req, res, next) => {
     // res.send('12312');
     authenticateUsers(req.body).then((resp)=>{
         const returnObject = {entity:_.omit(resp,'password'),msg:'success'};
-        res.status(200).send(returnObject);
+        res.status(200).send(_.omit(resp,'password'));
     }).catch(err=>{
-        next(err)
+        res.status(401).send(err);
+        // console.log(err);
+        // next(err)
     });   
 }
 
 function authenticateUsers(user){
+    const errorResponse = {
+        status: 500,
+        data: {},
+        error: {
+            message: "user match failed"
+        }
+    };
     return new Promise((resolve, reject) => {
         try {
             (database.users).findOne({
@@ -21,26 +30,20 @@ function authenticateUsers(user){
                 }
             }).then(async (response) => {
                 if (!response) {
-                    resolve(false);
+                    reject(errorResponse);
                 } else {
                     if (!response.dataValues.password ||
                         !await response.validPassword(user.pwd,
                             response.dataValues.password)) {
-                        resolve(false);
+                        reject(errorResponse);
                     } else {
                         resolve(response.dataValues)
                     }
                 }
             })
         } catch (error) {
-            const response = {
-                status: 500,
-                data: {},
-                error: {
-                    message: "user match failed"
-                }
-            };
-            reject(response);
+           
+            reject(errorResponse);
         }
     })
 }
