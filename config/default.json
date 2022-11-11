@@ -1,0 +1,109 @@
+{
+    "port": 9091,
+    "debug": true,
+    "tmpFolder": "./output",
+    "logFolder": "./output",
+    "templatesFolder": "./templates",
+    "appDb": {
+        "database": "new_mobility",
+        "user": "superadmin",
+        "pass": "tech.hp!",
+        "host": "139.59.57.10",
+        "port": 3306,
+        "connections": {
+            "max": 10,
+            "min": 1,
+            "idle": 10000
+        }
+    },
+    "timeout": 30000,
+    "redis": {
+        "host": "localhost",
+        "port": 6379
+    },
+    "baseUrl": "/api",
+    "uploadFolder": "./uploads",
+    "uiUrlPrefix": "http://dev.miqube.in/admin",
+    "empUrlPrefix": "http://dev.miqube.in",
+    "tenantMangementEntities": ["tenants"],
+    "jwtExceptionPaths": ["api/users/auth"],
+    "watcherEmails": ["kapil.sisodiya@hirepro.in", "prateek.s@hirepro.in"],
+    "slack": {
+        "webhook_url": "https://hooks.slack.com/services/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",
+        "channel": "dev-logs",
+        "username": "venkateshatr"
+    },
+    "rollbarToken": "2410e37157ea43c1b168793b5f74f69a",
+    "smsDetails": {
+        "sendUrl": "http://smslane.com/vendorsms/pushsms.aspx?user=hirepro&password=HiRePr0@2016&msisdn={mobileNumber}&sid=HREPRO&msg={message}&fl=0&gwid=2",
+        "statusUrl": "http://www.smslane.com/vendorsms/CheckDelivery.aspx?user=hirepro&password=HiRePr0@2016&messageid=",
+        "user": "hirepro",
+        "password": "HiRePr0@2016",
+        "templates": {
+            "wamsRegistrationMessage": "Dear {name}, Registration is successful. Details: {email}, {code}.",
+            "wamsOrderConfirmMessage": "Your order {trackingId} with cafe {cafe} is ready for delivery. Total Cost: {totalCost}, Balance: {balance}, Items: {items}\nThanks\nMiQUBE Team",
+            "wamsVerifyRegistrationMessage": "Dear {name}, Please use {mobileOtp} for verifying your registration at miqube.in.\nThanks\nMiQUBE Team"
+        },
+        "indicafe": {
+            "smsOnStatus": "readyForDelivery"
+        },
+        "desibites": {
+            "smsOnStatus": "readyForDelivery"
+        },
+        "mangomist": {
+            "smsOnStatus": "readyForDelivery"
+        }
+    },
+    "mailConfigs": {
+        "hirepro": {
+            "debug": true,
+            "host": "smtp.gmail.com",
+            "secure": true,
+            "port": 465,
+            "auth": {
+                "user": "noreply@indiqube.com",
+                "pass": "HirePro@1234"
+            }
+        }
+    },
+    "cron": [{
+        "pattern": "0 */45 4-13 * * *",
+        "tmz": "Asia/Calcutta",
+        "job": ["escalate-due-tickets", "process-email-tickets"]
+    }, {
+        "pattern": "0 */30 14-22 * * *",
+        "tmz": "Asia/Calcutta",
+        "job": ["escalate-due-tickets", "process-email-tickets"]
+    }, {
+        "pattern": "0 0 23 * * *",
+        "tmz": "Asia/Calcutta",
+        "job": ["post-unposted-orders", "process-bounce-mails"]
+    }],
+    "useRingBuffer": false,
+    "takeHeapDump": false,
+    "ccavenue": {
+        "workingKey": "E9AAA3EF93CA7FEEC8456596D9ADA6C7",
+        "accessCode": "AVNG00DI53CJ97GNJC",
+        "errorPageUrl": "/#/rechargedone",
+        "successPageUrl": "/#/rechargedone",
+        "payNowUrl": "/api/ccavenue/paymentsucceeded",
+        "paymentStatusUrl": "/api/ccavenue/paymentsucceeded",
+        "transactionUrl": "https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction",
+        "initialDataUrl": "http://test.ccavenue.com/transaction/transaction.do?command=getJsonData&currency=INR",
+        "data": {
+            "merchantId": 110787,
+            "currency": "INR",
+            "redirectUrl": "http://localhost:3000/api/ccavenue/paymentsucceeded",
+            "cancelUrl": "http://localhost:3000/api/ccavenue/paymentcancelled",
+            "language": "EN",
+            "billingCity": "Bangalore",
+            "billingCountry": "India",
+            "billingZip": "560101",
+            "billingState": "KA",
+            "deliveryCity": "Bangalore",
+            "deliveryCountry": "India",
+            "deliveryZip": "560101",
+            "deliveryState": "KA"
+        }
+    }
+}
