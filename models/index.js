@@ -41,7 +41,7 @@ db.userAttendance = require(`./userAttendance.model`)(sequelize,Sequelize);
 require(`./tenants.model`)(sequelize,Sequelize,db);
 
 require('../auth/models/users.model')(sequelize,Sequelize,db);
-
+db.vehicleGroups = require(`./vehicle-groups/vehilceGroups.model`)(sequelize,Sequelize);
 
 
 module.exports = db;

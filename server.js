@@ -79,6 +79,7 @@ require('./routes/userAttendance.routes')(app);
 require('./routes/tenants.routes')(app);
 require('./routes/auth/auth.routes')(app);
 require('./routes/users.routes')(app);
+require('./routes/vehicle-groups/vehicle-groups.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 9091;

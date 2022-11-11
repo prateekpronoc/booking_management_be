@@ -3,6 +3,7 @@
         "userattendance": "userAttendance",
         "peakseasons" :"peakSeasonsRental",
         "tenants" : "tenants",
-        "users":"users"
+        "users":"users",
+        "vehiclegroups":"vehicleGroups"
     }
 }
