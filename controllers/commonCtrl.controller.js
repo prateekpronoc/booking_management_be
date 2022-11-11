@@ -11,7 +11,7 @@ const getdbKey = require('../common/get-db-key');
 //Create
 async function saveData(req, res) {
     var dbKey = await getdbKey(req.baseUrl, req.config)();
-
+    console.log(dbKey);
     if (req.body && !_.has(req.body, 'id')) {
         await (db.sequelize).transaction(async function (transactional) {
             // req.body.docUuid = crypto.randomBytes(20).toString('hex');

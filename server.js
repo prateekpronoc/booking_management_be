@@ -34,6 +34,7 @@ config.modelKeys = require('./data-config/data-model.json').modelTables;
 // config.crypto = crypto;
 
 app.use(function (req, res, next) {
+  req.config = config;
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
@@ -77,7 +78,7 @@ require('./routes/peakSeasons.routes')(app);
 require('./routes/userAttendance.routes')(app);
 require('./routes/tenants.routes')(app);
 require('./routes/auth/auth.routes')(app);
-
+require('./routes/users.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 9091;
