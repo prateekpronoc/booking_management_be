@@ -42,6 +42,6 @@ require(`./tenants.model`)(sequelize,Sequelize,db);
 
 require('../auth/models/users.model')(sequelize,Sequelize,db);
 db.vehicleGroups = require(`./vehicle-groups/vehilceGroups.model`)(sequelize,Sequelize);
-
+db.resourceImages = require(`./resource-images/resourceImages.model`)(sequelize,Sequelize);
 
 module.exports = db;

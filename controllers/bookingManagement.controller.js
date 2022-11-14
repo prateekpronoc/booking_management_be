@@ -92,7 +92,7 @@ exports.rentcalculator = (req, res) => {
         let packageDetails = filteredPackages;
 
         return Promise.all(_.map(filteredPackages, (result) => {
-            return calculateTripCost(result.dataValues, startDateObject, endDateObject, peakdayList).then((resp) => {
+            return calculateTripCost(result.dataValues, startDateObject, endDateObject, []).then((resp) => {
                 resp.vehiclegroup_id = packageVehicles[result.id];
                 return Promise.resolve(result);
             });
@@ -153,7 +153,7 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
         if (checkSameDay(startDateObject.startDate, endDateObject.endDate)) {
             packageDetail.testingValue = 'Im Testing Same Day';
             return calculateSameDayRent(startDateObject, endDateObject, packageDetail).then((costConfiguration) => {
-                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
+                costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr),2);
                 costConfiguration.weekEndHrs = _.round(costConfiguration.weekEndHrs, 2);
                 costConfiguration.weekDayHrs = _.round(costConfiguration.weekDayHrs, 2);
                 costConfiguration.weekendRent = _.round((costConfiguration.weekendTariff) *
@@ -178,14 +178,17 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
             });
         } else {
             return calculateStartDayRent(startDateObject, packageDetail).then((costConfiguration) => {
-                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
+                costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr),2);
+                // costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
                 return calculateInbetweenRent(startDateObject, endDateObject, costConfiguration);
             }).then((costConfiguration) => {
-                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
+                costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr),2);
+                // costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
                 return calculateEndDayRent(endDateObject, costConfiguration);
 
             }).then(function (costConfiguration) {
-                costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
+                costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr),2);
+                // costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
                 costConfiguration.weekEndHrs = _.round(costConfiguration.weekEndHrs, 2);
                 costConfiguration.weekDayHrs = _.round(costConfiguration.weekDayHrs, 2);
                 costConfiguration.weekendRent = _.round((costConfiguration.weekendTariff) *

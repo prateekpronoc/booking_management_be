@@ -1,9 +1,10 @@
 {
     "modelTables": {
         "userattendance": "userAttendance",
-        "peakseasons" :"peakSeasonsRental",
-        "tenants" : "tenants",
-        "users":"users",
-        "vehiclegroups":"vehicleGroups"
+        "peakseasons": "peakSeasonsRental",
+        "tenants": "tenants",
+        "users": "users",
+        "vehiclegroups": "vehicleGroups",
+        "resourceimages": "resourceImages"
     }
 }
