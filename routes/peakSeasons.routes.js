@@ -9,6 +9,11 @@ module.exports = app => {
     router.get('/', commonCtrl.findAllWithPaging);
 
     router.get('/:id', commonCtrl.getEntityById);
+    
+    // router.get('/', commonCtrl.indexify);
   
      app.use('/booking_be/peakseasons', router);
+    //  app.use('/booking_be/peakseasons/', router);
+
+    //  router.get('/indixifyvalue', commonCtrl.indexify);
   };
