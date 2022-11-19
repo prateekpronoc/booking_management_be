@@ -83,6 +83,11 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
             type: `TIMESTAMP`,
             field: 'created_on'
+        },
+        securityDeposit: {
+            allowNull: true,
+            type: DataTypes.INTEGER,
+            field: 'security_deposit'
         }
     }, {
         timestamps: false

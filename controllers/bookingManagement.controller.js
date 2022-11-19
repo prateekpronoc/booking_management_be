@@ -7,7 +7,7 @@ const { sequelize } = require("../models");
 var _ = require('../startup/load-lodash')();
 var Promise = require('bluebird');
 var moment = require('moment');
-// console.log(db.customer);
+// //console.log(db.customer);
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
@@ -54,18 +54,24 @@ async function doStuff(queryString, dt) {
                 type: QueryTypes.SELECT
             }
         );
-        // console.log(msg)
+        // //console.log(msg)
         return msg;
     } catch (error) {
         console.error(error)
     }
-    console.log("Outside")
+    //console.log("Outside")
+}
+
+
+async function getEntityById(entityName, whereCondition) {
+    const dataEntity = await (db[entityName]).findOne({ where: whereCondition });
+    return dataEntity;
 }
 
 
 exports.rentcalculator = (req, res) => {
     var returnObj = {},
-        peakdayList = [];
+        peakdayList = [], securityDeposit = 0;
     var packageVehicles;
     var startDateObject = {
         startDate: moment(req.body.startDate).format('YYYY-MM-DD'),
@@ -76,14 +82,16 @@ exports.rentcalculator = (req, res) => {
             endTime: moment(req.body.endDate).format('HH:mm')
         };
 
-    // let peakdayList = [];
-    (db.peakSeasonsRental).findAll({ where: { isActive: 1 } }).then((resp) => {
-        // console.log(resp);
+    getEntityById('vehicleGroups', { id: req.body.groupIds[0] }).then((resp) => {
+        securityDeposit = resp.securityDeposit;
+        return (db.peakSeasonsRental).findAll({ where: { isActive: 1 } })
+    }).then((resp) => {
+        // //console.log(securityDeposit);
         peakdayList = resp;
         return (db.rentalPackage).findAll();
     }).then((resp) => {
         var filteredPackages = _.filter(resp, function (val) {
-            console.log(val.vehiclegroup_id);
+            //console.log(val.vehiclegroup_id);
             if (_.indexOf(req.body.groupIds, val.vehiclegroup_id) > -1) {
                 return val;
             }
@@ -92,21 +100,22 @@ exports.rentcalculator = (req, res) => {
         let packageDetails = filteredPackages;
 
         return Promise.all(_.map(filteredPackages, (result) => {
+            result.dataValues.securityDeposit = securityDeposit;
             return calculateTripCost(result.dataValues, startDateObject, endDateObject, []).then((resp) => {
                 resp.vehiclegroup_id = packageVehicles[result.id];
                 return Promise.resolve(result);
             });
         }));
     }).then((resp) => {
-        // console.log(resp);
+        // //console.log(resp);
         returnObj.otherInfo = _.indexify(resp, 'vehiclegroup_id');
         res.status(200).json(returnObj);
     });
 
     // (db.rentalPackage).findAll().then((resp) => {
-    //     console.log(req.body.groupIds);
+    //     //console.log(req.body.groupIds);
     //     var filteredPackages = _.filter(resp, function (val) {
-    //         console.log(val.vehiclegroup_id);
+    //         //console.log(val.vehiclegroup_id);
     //         if (_.indexOf(req.body.groupIds, val.vehiclegroup_id) > -1) {
     //             return val;
     //         }
@@ -121,7 +130,7 @@ exports.rentcalculator = (req, res) => {
     //         });
     //     }));
     // }).then((resp)=>{
-    //     // console.log(resp);
+    //     // //console.log(resp);
     //     returnObj.otherInfo = _.indexify(resp, 'vehiclegroup_id');
     //     res.status(200).json(returnObj); 
     // });
@@ -153,7 +162,7 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
         if (checkSameDay(startDateObject.startDate, endDateObject.endDate)) {
             packageDetail.testingValue = 'Im Testing Same Day';
             return calculateSameDayRent(startDateObject, endDateObject, packageDetail).then((costConfiguration) => {
-                costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr),2);
+                costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr), 2);
                 costConfiguration.weekEndHrs = _.round(costConfiguration.weekEndHrs, 2);
                 costConfiguration.weekDayHrs = _.round(costConfiguration.weekDayHrs, 2);
                 costConfiguration.weekendRent = _.round((costConfiguration.weekendTariff) *
@@ -178,16 +187,16 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
             });
         } else {
             return calculateStartDayRent(startDateObject, packageDetail).then((costConfiguration) => {
-                costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr),2);
+                costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr), 2);
                 // costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
                 return calculateInbetweenRent(startDateObject, endDateObject, costConfiguration);
             }).then((costConfiguration) => {
-                costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr),2);
+                costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr), 2);
                 // costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
                 return calculateEndDayRent(endDateObject, costConfiguration);
 
             }).then(function (costConfiguration) {
-                costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr),2);
+                costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr), 2);
                 // costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
                 costConfiguration.weekEndHrs = _.round(costConfiguration.weekEndHrs, 2);
                 costConfiguration.weekDayHrs = _.round(costConfiguration.weekDayHrs, 2);
@@ -198,7 +207,7 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
 
                 costConfiguration.weekdayRent = _.round((costConfiguration.cost_per_hr) *
                     costConfiguration.weekDayHrs);
-                console.log(costConfiguration.weekendTariff);
+                //console.log(costConfiguration.weekendTariff);
                 // costConfiguration.totalRent += _.round(costConfiguration.weekdayRent, 2);
                 costConfiguration.noOfWeekday = _.round((costConfiguration.weekDayHrs / 24), 2);
                 costConfiguration.totalRent = _.round((costConfiguration.weekendRent + costConfiguration.weekdayRent));
@@ -219,7 +228,7 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
         }
 
         //resolve(packageDetail);
-        //   console.log(packageDetail);
+        //   //console.log(packageDetail);
         // packageDetail.testingValue = 'Im Testing Value';
         // resolve(packageDetail);
     });
@@ -386,15 +395,15 @@ function calculateStartDayRent(startDateObject, costConfiguration) {
 }
 
 function calculateCost(startDateObject, endDateObject, costConfiguration, peakdayList) {
+// console.log(costConfiguration);
+    var securityDeposit = costConfiguration.securityDeposit;
+    // var startDateTime = new Date(startDateObject.startDate + ' ' + startDateObject.startTime),
+    //     endDateTime = new Date(endDateObject.endDate + ' ' + endDateObject.endTime),
+    //     timeDiffObj = (endDateTime - startDateTime) / 1000 / 60 / 60; //(bookingDetails.bookingEndDate, endDateTime);
 
-    var securityDeposit = 3000;
-    var startDateTime = new Date(startDateObject.startDate + ' ' + startDateObject.startTime),
-        endDateTime = new Date(endDateObject.endDate + ' ' + endDateObject.endTime),
-        timeDiffObj = (endDateTime - startDateTime) / 1000 / 60 / 60; //(bookingDetails.bookingEndDate, endDateTime);
-
-    if (timeDiffObj <= 24) {
-        securityDeposit = 1500;
-    }
+    // if (timeDiffObj <= 24) {
+    //     securityDeposit = 1500;
+    // }
 
     var pStartDate = moment(startDateObject.startDate).format('YYYY-MM-DD');
     var pEndDate = moment(endDateObject.endDate).format('YYYY-MM-DD');
@@ -410,11 +419,11 @@ function calculateCost(startDateObject, endDateObject, costConfiguration, peakda
         //Conditon 1 : if peak start date is between booking start and end date
         //condition 2 : if peak end date is between booking start and end date
         //condition 3 : if booking start and end date between peak start date and end date
-        //console.log(costConfiguration);
-        console.log('peakdayList');
+        ////console.log(costConfiguration);
+        //console.log('peakdayList');
         if (moment(peakdayList.startDate).isBetween(pStartDate, pEndDate, undefined,
             '[]')) {
-              console.log(1);
+            // //console.log(1);
             costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.peakRentalCharges);
             costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.peakRentalCharges);
 
@@ -425,7 +434,7 @@ function calculateCost(startDateObject, endDateObject, costConfiguration, peakda
             var startDiff = moment(peakdayList.endDate).diff(pStartDate, 'hours');
 
             if (startDiff >= 18 && endDiff <= 24) {
-                console.log('In between!!!');
+                //console.log('In between!!!');
                 costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.peakRentalCharges);
                 costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.peakRentalCharges);
                 costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
@@ -433,12 +442,12 @@ function calculateCost(startDateObject, endDateObject, costConfiguration, peakda
         } else if (moment(pStartDate).isBetween(moment(peakdayList.startDate), moment(peakdayList.endDate), undefined,
             '[]') && moment(pEndDate).isBetween(moment(peakdayList.startDate), moment(peakdayList.endDate), undefined,
                 '[]')) {
-            console.log(3);
+            //console.log(3);
             costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.peakRentalCharges);
             costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.peakRentalCharges);
             costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
         } else {
-            console.log('Others!!!!');
+            //console.log('Others!!!!');
             costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.peakRentalCharges);
             costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.peakRentalCharges);
             costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
@@ -454,8 +463,8 @@ function calculateCost(startDateObject, endDateObject, costConfiguration, peakda
     // if (moment('2021-01-26').isBetween(pStartDate, pEndDate, undefined,
     //     '[]')) {
 
-    //   // console.log(costConfiguration.weekendTariff);
-    //   // console.log('-------------------------------------');
+    //   // //console.log(costConfiguration.weekendTariff);
+    //   // //console.log('-------------------------------------');
 
     //   costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * 1.5);
     //   costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * 1.5);
@@ -465,7 +474,7 @@ function calculateCost(startDateObject, endDateObject, costConfiguration, peakda
     //Start Date is Same 
 
     //  if (moment('2021-01-26').isSame(pStartDate)) {
-    //   console.log('startdate');
+    //   //console.log('startdate');
     //    costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * 1.5);
     //    costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * 1.5);
     //    costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
@@ -474,7 +483,7 @@ function calculateCost(startDateObject, endDateObject, costConfiguration, peakda
 
     //  // End Date is Same
     // else if (moment('2021-01-26').isSame(pEndDate)) {
-    //  console.log('enddate');
+    //  //console.log('enddate');
     //    costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * 1.5);
     //    costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * 1.5);
     //    costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
@@ -487,7 +496,7 @@ function calculateCost(startDateObject, endDateObject, costConfiguration, peakda
     // if (moment(pEndDate).isSame(endDateObject.endDate)) {
     //   return peakhr;
     // }
-    // console.log(costConfiguration);
+    // //console.log(costConfiguration);
 
     costConfiguration.totalHrs = _.round(costConfiguration.weekDayHrs + costConfiguration.weekEndHrs);
     costConfiguration.securityDeposit = securityDeposit;
@@ -626,7 +635,7 @@ function findThursday(dateObj) {
 }
 
 function fetchVehicleDetails(whereCondition, database, req, busyOnes) {
-    // console.log(busyOnes);
+    // //console.log(busyOnes);
     return svc.commonGetAll({
         limit: 10000,
         key: 'wowVehicles',
@@ -636,18 +645,18 @@ function fetchVehicleDetails(whereCondition, database, req, busyOnes) {
             return Promise.reject();
         }
 
-        console.log(busyOnes);
+        //console.log(busyOnes);
 
         var availableVehicles = _.difference(_.map(response.rows, 'id'), busyOnes);
-        console.log(availableVehicles);
+        //console.log(availableVehicles);
         var filteredVehicles = _.filter(response.rows, (val) => {
             if (_.indexOf(availableVehicles, val.id) > -1) {
                 return val;
             }
         });
-        // console.log(_.map(filteredVehicles, 'id'));
-        //  console.log(availableVehicles);
-        // // console.log(availableVehicles);
+        // //console.log(_.map(filteredVehicles, 'id'));
+        //  //console.log(availableVehicles);
+        // // //console.log(availableVehicles);
         // // var filteredVehicles = _.filter(response.rows, (val) => {
         // //   if (_.indexOf(availableVehicles, val.id) > -1) {
         // //     val.isSoldOut = false;
@@ -658,8 +667,8 @@ function fetchVehicleDetails(whereCondition, database, req, busyOnes) {
         // //WOrking Code
         // var uniqVehicleList = _.uniqBy(response.rows, 'groupId');
         // var diff = _.difference(_.map(response.rows, 'id'), busyOnes);
-        // // console.log(busyOnes);
-        //  console.log(diff);
+        // // //console.log(busyOnes);
+        //  //console.log(diff);
 
 
         // var filteredVehicles = _.filter(response.rows, (val) => {
@@ -683,7 +692,7 @@ function fetchVehicleDetails(whereCondition, database, req, busyOnes) {
     //   where: whereCondition,
     //   limit: 100
     // }).then((vehiclelist) => {
-    //   // console.log(_.map(vehiclelist, 'dataValues').length);
+    //   // //console.log(_.map(vehiclelist, 'dataValues').length);
 
     //   if (_.map(vehiclelist, 'dataValues').length < 1) {
     //     return Promise.reject();
@@ -697,10 +706,10 @@ function fetchPeakDays(startDateObject, endDateObject, database) {
         limit: 100
     }).then((peakhrList) => {
         peakhrList = _.map(peakhrList, 'dataValues');
-        //  console.log(peakhrList);
+        //  //console.log(peakhrList);
         var selectedPeakHrs = _.filter(peakhrList, function (peakhr) {
             var pStartDate = moment(peakhr.startDate).format('YYYY-MM-DD');
-            // console.log(pStartDate);
+            // //console.log(pStartDate);
             var pEndDate = moment(peakhr.endDate).format('YYYY-MM-DD');
             if (moment(pStartDate).isBetween(startDateObject.startDate, endDateObject.endDate, undefined,
                 '[]')) {
@@ -734,32 +743,32 @@ function fetchPeakDays(startDateObject, endDateObject, database) {
             if (moment(pStartDate).isBetween(moment(startDateObject.startDate), moment(endDateObject.endDate), undefined, '[]') && moment(pEndDate).isBetween(moment(startDateObject.startDate), moment(endDateObject.endDate), undefined, '[]')) {
                 return peakhr;
             }
-            // console.log('test');
+            // //console.log('test');
         });
-        // console.log(selectedPeakHrs);
+        // //console.log(selectedPeakHrs);
         return Promise.resolve(selectedPeakHrs);
     });
 }
 
 function fetchPackageVehicles(vehicleIds, database) {
-    // console.log('vehicleIds');
-    // console.log(vehicleIds);
+    // //console.log('vehicleIds');
+    // //console.log(vehicleIds);
     return database.packageVehicles.findAll({
         where: { vehicleId: { $in: [vehicleIds] } },
         attributes: ['packageId', 'vehicleId']
     }).then((resp) => {
-        // console.log(_.indexify(resp, 'vehicleId', 'packageId'));
+        // //console.log(_.indexify(resp, 'vehicleId', 'packageId'));
         return Promise.resolve(resp);
     });
 }
 
 function fetchPackageDetails(packageIds, database) {
-    //  console.log(packageIds);
+    //  //console.log(packageIds);
     return database.packageDetails.findAll({
         where: { id: { $in: packageIds } },
         attributes: ['id', 'name', 'freeKm', 'extraKmCharges', 'vehicleId', 'weekdayTariff', 'weekendTariff', 'minimumBookingHrs', 'costingHr']
     }).then((resp) => {
-        // console.log(resp.dataValues);
+        // //console.log(resp.dataValues);
         return Promise.resolve(resp);
     });
 }
