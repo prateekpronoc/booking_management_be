@@ -20,8 +20,28 @@ app.use(cors(corsOptions));
 // parse requests of content-type - application/json
 app.use(express.json());
 
+
+
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+console.log(config);
+app.use(require('express-bunyan-logger')({
+  name: 'logger',
+  streams :[{
+    path: config.logFolder + '/' + ( '') + 'wowcarz.log',
+    type: 'rotating-file',
+    level: 'debug',
+    period: '1d', // daily rotation
+    count: 3 // keep 3 back copies
+  }, {
+    path: config.logFolder + '/' + ( '') + 'wowcarz-err.log',
+    type: 'rotating-file',
+    level: 'warn',
+    period: '1d', // daily rotation
+    count: 3 // keep 3 back copies
+  }]
+}));
+
 
 // simple route
 app.get("/", (req, res) => {
@@ -40,7 +60,11 @@ app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
   res.header('Access-Control-Expose-Headers', 'Content-Length');
   res.header('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, X-Requested-With, Range');
-
+  // app.use(function(req, res, next) {
+  req.log.debug('this is debug in middleware');
+  //     next();
+  // });
+  req.log.info('.getAllEntities : Params = ', req.params);
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   } else {
