@@ -1,6 +1,7 @@
 module.exports = app => {
     const fleetBookingCtrl = require('../controllers/fleetBooking.controller.js');
     const fleetBookingManagementCtrl = require('../controllers/fleetBookingManagement.controller');
+    const actions = require('../controllers/commonCtrl.controller');
   
     var router = require("express").Router();
   
@@ -8,7 +9,7 @@ module.exports = app => {
     router.post("/", fleetBookingCtrl.create);
   
     // Retrieve all Tutorials
-    router.get("/", fleetBookingCtrl.findAll);
+    router.get("/", actions.findAllWithPaging);
 
     router.get("/:id", fleetBookingCtrl.findOne);
   
