@@ -105,6 +105,7 @@ require('./routes/auth/auth.routes')(app);
 require('./routes/users.routes')(app);
 require('./routes/vehicle-groups/vehicle-groups.routes')(app);
 require('./routes/resouce-images/resourceImages.routes')(app);
+require('./routes/booking-swappings/booking-swappings.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 9091;

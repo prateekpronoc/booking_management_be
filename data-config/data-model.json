@@ -6,6 +6,7 @@
         "users": "users",
         "vehiclegroups": "vehicleGroups",
         "resourceimages": "resourceImages",
-        "fleetbooking": "fleetBooking"
+        "fleetbooking": "fleetBooking",
+        "bookingswappings" :"fleetBookingSwappings"
     }
 }
