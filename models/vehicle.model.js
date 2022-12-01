@@ -59,6 +59,11 @@ module.exports = (sequelize, Sequelize) => {
 			type: DataTypes.INTEGER,
             field : 'vehiclegroup_id'
 		},
+		cityId: {
+			allowNull: true,
+			type: DataTypes.INTEGER,
+            field : 'city_id'
+		}
     },{
         timestamps : false
     });

@@ -31,8 +31,12 @@ exports.availabilitySearch = (req, res) => {
     var busyOnes = [];
     doStuff(queryStr, dt).then((resp) => {
         busyOnes = _.map(resp, 'vehicleId');
+        let whereCondition = {cityId: req.body.cityId};
         return (db.vehicles).findAndCountAll();
     }).then((response) => {
+        response.rows = _.filter(response.rows,(val)=>{
+            return val.cityId==req.body.cityId;
+        });
         var availableVehicles = _.difference(_.map(response.rows, 'id'), busyOnes);
         var filteredVehicles = _.filter(response.rows, (val) => {
             if (_.indexOf(availableVehicles, val.id) > -1) {
