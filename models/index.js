@@ -46,6 +46,7 @@ db.vehicleGroups = require(`./vehicle-groups/vehilceGroups.model`)(sequelize,Seq
 db.resourceImages = require(`./resource-images/resourceImages.model`)(sequelize,Sequelize);
 db.fleetBookingSwappings = require(`./booking-swappings/bookingSwapping`)(sequelize,Sequelize);
 db.deliveryLocations = require(`./delivery-locations/deliveryLocations.model`)(sequelize,Sequelize);
+db.pickupLocations = require(`./pickup-locations/pickupLocations.model`)(sequelize,Sequelize);
 
 
 module.exports = db;
