@@ -86,7 +86,7 @@ async function findAllWithPaging(req, res) {
     //   console.log(columns);
         let query = {};
         helpMehtod({},_)(db, req.query, dbKey, columns).then((resp)=>{
-            console.log(resp);
+            // console.log(resp);
             query = resp;
             return fetchData(query,dbKey);
             // const data = await (db[dbKey]).findAndCountAll(query).catch(error => {
