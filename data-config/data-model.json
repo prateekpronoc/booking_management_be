@@ -8,6 +8,7 @@
         "resourceimages": "resourceImages",
         "fleetbooking": "fleetBooking",
         "bookingswappings" :"fleetBookingSwappings",
-        "deliverylocations" :"deliveryLocations"
+        "deliverylocations" :"deliveryLocations",
+        "pickuplocations" :"pickupLocations"
     }
 }
