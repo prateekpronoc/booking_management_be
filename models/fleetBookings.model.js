@@ -238,6 +238,16 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
             type: DataTypes.DOUBLE,
             field: 'final_odometer'
+        },
+        cityId: {
+            allowNull: true,
+            type: DataTypes.BIGINT,
+            field: 'city_id'
+        },
+        cityName: {
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'city_name'
         }
     }, {
         timestamps: false
