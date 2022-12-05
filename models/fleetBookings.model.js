@@ -254,7 +254,7 @@ module.exports = (sequelize, Sequelize) => {
             type :DataTypes.BIGINT,
             field :'hub_id'
         },
-        hubId :{
+        hubName :{
             allowNull : true,
             type :DataTypes.STRING,
             field :'hub_name'
