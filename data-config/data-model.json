@@ -9,6 +9,7 @@
         "fleetbooking": "fleetBooking",
         "bookingswappings" :"fleetBookingSwappings",
         "deliverylocations" :"deliveryLocations",
-        "pickuplocations" :"pickupLocations"
+        "pickuplocations" :"pickupLocations",
+        "hubs":"hubs"
     }
 }

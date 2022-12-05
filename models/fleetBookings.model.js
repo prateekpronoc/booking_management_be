@@ -248,6 +248,26 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
             type: DataTypes.STRING,
             field: 'city_name'
+        },
+        hubId :{
+            allowNull : true,
+            type :DataTypes.BIGINT,
+            field :'hub_id'
+        },
+        hubId :{
+            allowNull : true,
+            type :DataTypes.STRING,
+            field :'hub_name'
+        },
+        isDelivery :{
+            allowNull : true,
+            type :DataTypes.TINYINT,
+            field :'is_delivery'
+        },
+        isPickup :{
+            allowNull : true,
+            type :DataTypes.TINYINT,
+            field :'is_pickup'
         }
     }, {
         timestamps: false

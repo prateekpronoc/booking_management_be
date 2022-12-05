@@ -48,5 +48,7 @@ db.fleetBookingSwappings = require(`./booking-swappings/bookingSwapping`)(sequel
 db.deliveryLocations = require(`./delivery-locations/deliveryLocations.model`)(sequelize,Sequelize);
 db.pickupLocations = require(`./pickup-locations/pickupLocations.model`)(sequelize,Sequelize);
 
+db.hubs = require(`./hubs/hubs.model`)(sequelize,Sequelize);
+
 
 module.exports = db;
