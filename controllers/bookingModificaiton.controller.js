@@ -24,7 +24,7 @@ exports.extensionRequestRentalDetails = (req, res) => {
     var returnObj = {},
         peakdayList;
     var packageVehicles;
-    // console.log(moment(req.query.startDate).format('YYYY-MM-DD'));
+    console.log(req.body.groupIds);
     var startDateObject = {
         startDate: moment(req.body.startDate).format('YYYY-MM-DD'),
         startTime: moment(req.body.startDate).format('HH:mm')
@@ -40,7 +40,7 @@ exports.extensionRequestRentalDetails = (req, res) => {
             }
         }
     }).then((response) => {
-        // console.log(response);
+        console.log(response);
         packageVehicles = _.indexify(response, 'id', 'vehiclegroup_id');
         let packageDetails = response;
 
@@ -53,7 +53,7 @@ exports.extensionRequestRentalDetails = (req, res) => {
 
         // res.status(200).json(resp);
     }).then((resp)=>{
-        // console.log(resp);
+        console.log(resp);
         returnObj.otherInfo = _.indexify(resp, 'vehiclegroup_id');
         returnObj.data = returnObj.otherInfo[req.body.groupIds[0]];
         returnObj = _.omit(returnObj,'otherInfo');

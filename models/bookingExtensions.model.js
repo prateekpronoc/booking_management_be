@@ -91,6 +91,22 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.DATE,
             field: 'end_date'
         },
+        oldStartDate: {
+            allowNull: true,
+            type: DataTypes.DATE,
+            field: 'old_start_date'
+        },
+        oldEndDate: {
+            allowNull: true,
+            type: DataTypes.DATE,
+            field: 'old_end_date'
+        },
+        paymentType: {
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'payment_type'
+        },
+
     }, {
         timestamps: false
     });
