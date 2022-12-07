@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-
+const moment = require('moment');
 
 module.exports = (sequelize, Sequelize) => {
     const fleetBookings = sequelize.define("fleet_bookings", {
@@ -271,6 +271,10 @@ module.exports = (sequelize, Sequelize) => {
         }
     }, {
         timestamps: false
+    });
+
+    fleetBookings.beforeCreate(async (entity, options) => {
+        entity.createdOn = moment().format("YYYY-MM-DDTHH:mm");
     });
 
     return fleetBookings;
