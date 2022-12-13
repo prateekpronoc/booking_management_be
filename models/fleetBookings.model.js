@@ -268,6 +268,11 @@ module.exports = (sequelize, Sequelize) => {
             allowNull : true,
             type :DataTypes.TINYINT,
             field :'is_pickup'
+        },
+        comment :{
+            allowNull : true,
+            type :DataTypes.STRING,
+            field :'comment'
         }
     }, {
         timestamps: false
