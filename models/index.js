@@ -50,6 +50,6 @@ db.deliveryLocations = require(`./delivery-locations/deliveryLocations.model`)(s
 db.pickupLocations = require(`./pickup-locations/pickupLocations.model`)(sequelize,Sequelize);
 
 db.hubs = require(`./hubs/hubs.model`)(sequelize,Sequelize);
-
+db.bookingComments = require(`./booking-comments/bookingComments`)(sequelize,Sequelize);
 
 module.exports = db;

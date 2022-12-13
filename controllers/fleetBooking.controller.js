@@ -8,7 +8,7 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
-
+    let responseObject= {};
     var date = moment().hours(0).minutes(0).seconds(0).milliseconds(0).toDate(), code;
     (db.fleetBookingSeq).create({ created_on: date }).then((resp) => {
         code = 'WCBLRINQ';
@@ -21,7 +21,12 @@ exports.create = (req, res) => {
         return (db.fleetBooking).create(req.body)
         // res.status(200).json(code);
     }).then((resp) => {
-        res.status(200).json(resp);
+        responseObject = resp;
+        console.log(resp);
+        return (db.bookingComments).create({comment:req.body.comment,commentedBy:req.body.commentedBy,bookingId : resp.id,createdBy: req.body.createdBy});
+        // res.status(200).json(resp);
+    }).then((resp)=>{
+        return res.status(200).json(responseObject);
     });
 
     // return config.svc.commonCreateEntity({body: { createdAt: date},user: req.user,key: entity}, req).then((seq) => {

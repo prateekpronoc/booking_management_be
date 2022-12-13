@@ -8,6 +8,7 @@ const getAll = require('../common/get-all');
 const createEnity = require('../common/create-entity');
 const getdbKey = require('../common/get-db-key');
 let helpMehtod = require('../services/prepare-conditions');
+const axios = require('axios');
 //Create
 async function saveData(req, res) {
     var dbKey = await getdbKey(req.baseUrl, req.config)();
@@ -148,6 +149,25 @@ async function test(req, res, next) {
     //    next();
 }
 
+async function getPlaces(req, res, next) {
+
+    try {
+        const neighborhood = 'wowcarz'
+        // const borough = 'manhattan'
+        // const city = 'new+york+city'
+        // const category = 'burgers'
+        const {data} = await axios.get(
+        
+     `https://maps.googleapis.com/maps/api/place/textsearch/json?query=$${neighborhood}&key=AIzaSyCZfj1Nlgz8rft7rrNaffyjw0ZpgfM42OI`
+        )
+        res.json(data)
+        } 
+      catch (err) {
+       next(err)
+     }
+    //    next();
+}
+
 async function indexify(req, res, next) {
     console.log(baseUrl);
     var dbKey = await getdbKey(req.baseUrl, req.config)();
@@ -178,7 +198,8 @@ module.exports = {
     saveData,
     findAllWithPaging,
     getEntityById,
-    indexify
+    indexify,
+    getPlaces
 }
 
 

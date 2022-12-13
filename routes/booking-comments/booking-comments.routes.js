@@ -1,6 +1,5 @@
 module.exports = app => {
     const commonCtrl = require(`../../controllers/commonCtrl.controller`);
-    // const swappingLogicCtrl = require(`../../controllers/bookingSwapping.controller`);
     // console.log('fadsfasdfsaadsfdsafsdfasdfsfssaasdfsadf');
     var router = require("express").Router();
     
@@ -9,8 +8,6 @@ module.exports = app => {
     router.get('/', commonCtrl.findAllWithPaging);
 
     router.get('/:id', commonCtrl.getEntityById);
-
-    router.post('/places',commonCtrl.getPlaces);
   
-     app.use('/booking_be/deliverylocations', router);
+     app.use('/booking_be/bookingcomments', router);
   };
