@@ -22,7 +22,10 @@ async function saveData(req, res) {
                 }
             }, { transaction: transactional });
 
-        const paymentData = await (db.bookingPayments).create(req.body.paymentObject, { transaction: transactional })
+        if (_.has(req.body, 'paymentObject')) {
+
+            const paymentData = await (db.bookingPayments).create(req.body.paymentObject, { transaction: transactional })
+        }
 
         // TODO: Update Vehicle Odometer Reading.....
 

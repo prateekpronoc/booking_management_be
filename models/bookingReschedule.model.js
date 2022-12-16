@@ -60,7 +60,7 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.DATE,
             field: 'current_endDate'
         },
-        newendDate: {
+        newEndDate: {
             allowNull: true,
             type: DataTypes.DATE,
             field: 'new_endDate'
