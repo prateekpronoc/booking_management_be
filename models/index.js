@@ -51,5 +51,6 @@ db.pickupLocations = require(`./pickup-locations/pickupLocations.model`)(sequeli
 
 db.hubs = require(`./hubs/hubs.model`)(sequelize,Sequelize);
 db.bookingComments = require(`./booking-comments/bookingComments`)(sequelize,Sequelize);
+db.tempBookings = require(`./temp-bookings/tempBookings.model`)(sequelize,Sequelize);
 
 module.exports = db;

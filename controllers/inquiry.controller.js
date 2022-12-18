@@ -22,6 +22,7 @@ async function saveInquiry(req, res) {
             }
 
             req.body.inquiryCode = code;
+            // req.body.createdOn = date;
             console.log(req.body);
             const inquiry = await (db.fleetBooking).create(req.body, { transaction });
 

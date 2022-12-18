@@ -226,7 +226,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         createdOn: {
             allowNull: true,
-            type: `TIMESTAMP`,
+            type: DataTypes.DATE,
             field: 'created_on'
         },
         initialOdometer: {

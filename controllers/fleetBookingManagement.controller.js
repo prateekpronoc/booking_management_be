@@ -33,8 +33,9 @@ async function initiateBooking(req, res) {
                 },{transaction:transactional});
 
             
-            
-           //TODO : Update Temp Table
+            const tempBookingData = await (db.tempBookings).create(req.body.tempBookingObject,{transactional:transactional});
+
+           
 
             return res.status(200).send(bookingData);
         });
