@@ -12,7 +12,7 @@ async function initiateRefund(req, res) {
         const bookingRefund = await (db.bookingRefund).create(req.body, { transaction: transactional });
 
         const bookingUpdateObject = {
-            status: 'Refund Initiated',
+            status: 'Refund Pending',
             refundableAmount: req.body.refundableAmount
         };
 
