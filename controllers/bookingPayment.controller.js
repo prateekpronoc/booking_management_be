@@ -48,7 +48,7 @@ async function savePaymentDetails(req, res) {
         const bookingPayment = await (db.bookingPayments).create(req.body, { transaction: transactional });
 
         if (_.has(req.body, 'changeStatus') && req.body.changeStatus) {
-            const bookingData = await (db.fleetBooking).update({ status: 'Pending' },
+            const bookingData = await (db.fleetBooking).update({ status: 'Schedule' },
                 {
                     where: {
                         id: req.body.bookingId
