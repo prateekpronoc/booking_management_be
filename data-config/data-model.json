@@ -11,6 +11,7 @@
         "deliverylocations" :"deliveryLocations",
         "pickuplocations" :"pickupLocations",
         "hubs":"hubs",
-        "bookingcomments" :"bookingComments"
+        "bookingcomments" :"bookingComments",
+        "rentalpackages" : "rentalPackage"
     }
 }

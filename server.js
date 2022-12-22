@@ -111,6 +111,7 @@ require('./routes/pickup-locations/pickupLocations.routes')(app);
 require('./routes/hubs/hubs.routes')(app);
 require(`./routes/booking-comments/booking-comments.routes`)(app);
 require(`./routes/vehicle-bookings/vehicle-bookings.routes`)(app);
+require(`./routes/rental-packages/rentalPackage.routes`)(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 9091;
 app.listen(PORT, () => {
