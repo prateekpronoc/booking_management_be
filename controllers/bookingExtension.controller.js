@@ -23,7 +23,10 @@ async function saveData(req, res) {
                 }
             }, { transaction: transactional });
 
-        const paymentData = await (db.bookingPayments).create(req.body.paymentObject, { transaction: transactional })
+        if (_.has(req.body, 'paymentObject')) {
+            const paymentData = await (db.bookingPayments).create(req.body.paymentObject, { transaction: transactional })
+        }
+
 
         // TODO: Update Vehicle Odometer Reading.....
 
@@ -48,9 +51,11 @@ async function findAll(req, res) {
     const limit = req.query.pageSize ? +(req.query.pageSize) : 10;
     // const offset = const limit = size ? +size : 3;
     const offset = req.query.page ? req.query.page * limit : 0;
-    const data = await (db.bookingExtension).findAndCountAll({ limit, offset , order: [
-        // Will escape title and validate DESC against a list of valid direction parameters
-        ['createdOn', 'DESC']]}).catch(error => {
+    const data = await (db.bookingExtension).findAndCountAll({
+        limit, offset, order: [
+            // Will escape title and validate DESC against a list of valid direction parameters
+            ['createdOn', 'DESC']]
+    }).catch(error => {
         return res.status(500).send({
             message:
                 error.message || "Some error occurred while retrieving data."
