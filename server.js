@@ -27,14 +27,14 @@ app.use(express.urlencoded({ extended: true }));
 console.log(config);
 app.use(require('express-bunyan-logger')({
   name: 'logger',
-  streams :[{
-    path: config.logFolder + '/' + ( '') + 'wowcarz.log',
+  streams: [{
+    path: config.logFolder + '/' + ('') + 'wowcarz.log',
     type: 'rotating-file',
     level: 'debug',
     period: '1d', // daily rotation
     count: 3 // keep 3 back copies
   }, {
-    path: config.logFolder + '/' + ( '') + 'wowcarz-err.log',
+    path: config.logFolder + '/' + ('') + 'wowcarz-err.log',
     type: 'rotating-file',
     level: 'warn',
     period: '1d', // daily rotation
@@ -112,6 +112,8 @@ require('./routes/hubs/hubs.routes')(app);
 require(`./routes/booking-comments/booking-comments.routes`)(app);
 require(`./routes/vehicle-bookings/vehicle-bookings.routes`)(app);
 require(`./routes/rental-packages/rentalPackage.routes`)(app);
+require(`./routes/user-audit-logs/userAuditLogs.routes`)(app);
+
 // set port, listen for requests
 const PORT = process.env.PORT || 9091;
 app.listen(PORT, () => {
