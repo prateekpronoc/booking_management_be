@@ -42,7 +42,7 @@ module.exports = (sequelize, Sequelize) => {
         appName: {
             allowNull: true,
             type: DataTypes.STRING,
-            field: 'chapp_namearges'
+            field: 'app_name'
         },
         generatedOn: {
             allowNull: true,
