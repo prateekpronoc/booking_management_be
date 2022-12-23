@@ -86,6 +86,9 @@ exports.rentcalculator = (req, res) => {
             endTime: moment(req.body.endDate).format('HH:mm')
         };
 
+
+    // console.log(startDateObject);
+
     getEntityById('vehicleGroups', { id: req.body.groupIds[0] }).then((resp) => {
         securityDeposit = resp.securityDeposit;
         return (db.peakSeasonsRental).findAll({ where: { isActive: 1 } })
@@ -101,6 +104,7 @@ exports.rentcalculator = (req, res) => {
             }
         });
         packageVehicles = _.indexify(filteredPackages, 'id', 'vehiclegroup_id');
+        // console.log(filteredPackages);
         let packageDetails = filteredPackages;
 
         return Promise.all(_.map(filteredPackages, (result) => {
@@ -185,6 +189,7 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
                     .weekDayHrs) / 24);
                 costConfiguration.totalFreeKms = _.round((costConfiguration.km_per_hr) * costConfiguration.totalTripDurationInHrs,
                     2);
+                    
                 return calculateCost(startDateObject, endDateObject, costConfiguration, peakdayList);
             }).then((costConfiguration) => {
                 resolve(costConfiguration);
@@ -292,6 +297,7 @@ function calculateEndDayRent(endDateObject, costConfiguration) {
 }
 
 function calculateSameDayRent(starteDateObj, endDateObj, costConfiguration) {
+    //console.log(costConfiguration);
     if (!findWeekend(starteDateObj.startDate, starteDateObj.startTime) && !(
         findWeekend(endDateObj.endDate, endDateObj.endTime))) {
         //Calcuate WeekDayRent
@@ -337,21 +343,23 @@ function calculateSameDayRent(starteDateObj, endDateObj, costConfiguration) {
 }
 
 function calculateWeekDayRent(dateObj, costConfig) {
+    // console.log(costConfig);
     var diff = calculateHrs(dateObj);
-    costweekdayRent = _.round((costweekdayTariff / costcostingHr) * diff, 2);
-    costtotalRent += costweekdayRent;
-    costnoOfWeekday += diff / 24;
-    costweekDayHrs += diff;
+    costConfig.weekdayRent = _.round((costConfig.cost_per_hr / costConfig.weekDayHrs) * diff, 2);
+    costConfig.totalRent += costConfig.weekdayRent;
+    costConfig.noOfWeekday += diff / 24;
+    costConfig.weekDayHrs += diff;
     return costConfig;
 }
 
 
 function calculateWeekEndRent(dateObj, costConfig) {
-    var diff = calculateHrs(dateObj);
-    costweekendRent = _.round((costweekendTariff / costcostingHr) * diff, 2);
-    costtotalRent += _.round(costweekdayRent, 2);
-    costnoOfWeekends += diff / 24;
-    costweekEndHrs += diff;
+    var diff = calculateHrs(dateObj),
+    weekendTariff = costConfig.cost_per_hr +  (costConfig.cost_per_hr * costConfig.weekend_cost/100);
+    costConfig.weekendRent = _.round((weekendTariff / costConfig.weekEndHrs) * diff, 2);
+    costConfig.totalRent += _.round(costConfig.weekendTariff, 2);
+    costConfig.noOfWeekends += diff / 24;
+    costConfig.weekEndHrs += diff;
     return costConfig;
 }
 
