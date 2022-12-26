@@ -63,6 +63,11 @@ module.exports = (sequelize, Sequelize) => {
 			allowNull: true,
 			type: DataTypes.INTEGER,
             field : 'city_id'
+		},
+		currentStatus :{
+			allowNull: true,
+			type: DataTypes.STRING,
+            field : 'current_status'
 		}
     },{
         timestamps : false

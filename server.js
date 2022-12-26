@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const config = require('config'); const app = express();
-
+let config = require('config'); const app = express();
+let _ = require('./startup/load-lodash')();
 var corsOptions = {
   origin: "*"
 };
@@ -24,7 +24,7 @@ app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
-console.log(config);
+// console.log(config);
 app.use(require('express-bunyan-logger')({
   name: 'logger',
   streams: [{
@@ -48,6 +48,15 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to Booking System." });
 });
 
+config.Promise = Promise;
+require('./startup/load-kue')(config).then((queueInfo) => {
+    config = _.merge(config, queueInfo);
+    // console.log(config);
+    // config.modelKeys = require('./data-config/data-model.json').modelTables;
+    
+    // config.backgroundWorker = require('./background-server/background-worker')(config, _, db);
+    // queueInfo
+})
 
 
 config.modelKeys = require('./data-config/data-model.json').modelTables;
@@ -64,6 +73,7 @@ app.use(function (req, res, next) {
   req.log.debug('this is debug in middleware');
   //     next();
   // });
+  // req.config = config;
   req.log.info('.getAllEntities : Params = ', req.params);
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
@@ -113,6 +123,8 @@ require(`./routes/booking-comments/booking-comments.routes`)(app);
 require(`./routes/vehicle-bookings/vehicle-bookings.routes`)(app);
 require(`./routes/rental-packages/rentalPackage.routes`)(app);
 require(`./routes/user-audit-logs/userAuditLogs.routes`)(app);
+require(`./routes/daily-rental/fleetAvailability.routes`)(app);
+require(`./routes/blocked-vehicles/blockedVehicles.routes`)(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 9091;

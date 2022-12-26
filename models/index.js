@@ -53,4 +53,6 @@ db.hubs = require(`./hubs/hubs.model`)(sequelize,Sequelize);
 db.bookingComments = require(`./booking-comments/bookingComments`)(sequelize,Sequelize);
 db.tempBookings = require(`./temp-bookings/tempBookings.model`)(sequelize,Sequelize);
 db.userAuditLogs = require(`./user-audit-logs/userAuditLogs.model`)(sequelize,Sequelize);
+db.blockedVehicles = require(`./blocked-vehicles/blockedVehicles.model`)(sequelize,Sequelize);
+
 module.exports = db;

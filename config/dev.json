@@ -1,1 +1,4 @@
-{"logFolder": "./output"}
+{
+    "logFolder": "./output",
+    "searchQuery" : "SELECT b.vehicle_id AS vehicleId, COUNT(b.id) AS count FROM temp_bookings AS b WHERE (b.booking_status not in (:cancelStatus,:completedStatus,:fleetCancelStatus,:fleetBookingCompleted,:inquiry)) and ((b.start_date >= :from AND b.start_date <= :to) OR (b.end_date >= :from AND b.end_date <= :to) or (:from between b.start_date and b.end_date) or (:to between b.start_date and b.end_date) or (b.end_date between :from and :to) or (b.start_date between :from and :to)) group by b.vehicle_id;"
+}

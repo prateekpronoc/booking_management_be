@@ -1,0 +1,101 @@
+{
+    "backgroundWorkers": {
+        "email-transaction-details": {
+            "concurrency": 3,
+            "service": "email-transaction-details"
+        },
+        "email": {
+            "concurrency": 10,
+            "service": "mailsender",
+            "notify": "true",
+            "notifyPreProcessor": "email-notify-pre-process"
+        },
+        "post-transaction": {
+            "concurrency": 1,
+            "service": "post-transaction-for-order"
+        },
+        "user-logged-in": {
+            "concurrency": 2,
+            "service": "user-logged-in"
+        },
+        "welcome-users": {
+            "concurrency": 1,
+            "service": "welcome-users"
+        },
+        "post-unposted-orders": {
+            "concurrency": 1,
+            "service": "due-transaction-scheduler"
+        },
+        "process-bounce-mails": {
+            "concurrency": 1,
+            "service": "process-bounce-mails"
+        },
+        "send-sms": {
+            "concurrency": 3,
+            "service": "send-sms",
+            "notify": "true",
+            "notifyPreProcessor": "sms-notify-pre-process"
+        },
+        "booking-breakups": {
+            "concurrency": 3,
+            "service": "booking-breakups"
+        },
+        "calculate-delivery-nrk": {
+            "concurrency": 3,
+            "service": "calculate-delivery-nrk"
+        },
+        "calculate-pickup-nrk": {
+            "concurrency": 3,
+            "service": "calculate-pickup-nrk"
+        },
+         "vehicle-block": {
+            "concurrency": 3,
+            "service": "vehicle-block"
+        },
+        "send-block-message": {
+            "concurrency": 3,
+            "service": "send-block-message"
+        },
+        "vehicle-unblock" :{
+          "concurrency": 3,
+          "service": "vehicle-unblock"  
+        },
+        "create-drop-trip" :{
+            "concurrency" :3,
+            "service" : "create-drop-trip"
+        },
+        "create-pickup-trip" :{
+            "concurrency" :3,
+            "service" : "create-pickup-trip"
+        },
+        "create-search-history" :{
+            "concurrency" :3,
+            "service" : "create-search-history"
+        },
+        "assign-enquiry-to-booking":{
+            "concurrency" : 3,
+            "service" : "assign-enquiry-to-booking"
+        },
+        "send-booking-mail":{
+            "concurrency" : 3,
+            "service" : "send-booking-mail"
+        },
+        "send-inquiry-mails":{
+            "concurrency" : 3,
+            "service" : "send-inquiry-mails"
+        },
+        "send-fleet-booking-mails":{
+            "concurrency" : 3,
+            "service" : "send-fleet-booking-mails"
+        },
+        "document-reminder" :{
+            "concurrency": 3,
+            "service": "document-reminder"  
+          }
+    },
+    "resourcesRequiringCapacityBooking": {
+        "gyms": {
+            "attribute": "capacity"
+        }
+    }
+}

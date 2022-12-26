@@ -1,11 +1,13 @@
 'use strict';
 module.exports = function(config, prefix) {
+  console.log(config.logFolder);
   var bunyan = require('bunyan'),
     // rollbar = require('rollbar'),
     // bunyanRollbar = require('bunyan-rollbar'),
     // BunyanSlack = require('bunyan-slack'),
+   
     streams = [{
-      path: config.logFolder + '/' + (prefix || '') + 'booking-system.log',
+      path: config.logFolder + '/' + ('')  + 'booking-system.log',
       type: 'rotating-file',
       level: 'debug',
       period: '1d', // daily rotation

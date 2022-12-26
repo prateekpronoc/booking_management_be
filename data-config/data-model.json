@@ -13,6 +13,7 @@
         "hubs": "hubs",
         "bookingcomments": "bookingComments",
         "rentalpackages": "rentalPackage",
-        "userauditlogs": "userAuditLogs"
+        "userauditlogs": "userAuditLogs",
+        "blockedvehicles": "blockedVehicles"
     }
 }

@@ -68,10 +68,14 @@ async function fetchData(query,dbKey){
          where : query.where   
     });
     return data;
+   
 }
 
 //Get All with Paging
 async function findAllWithPaging(req, res) {
+
+    
+   
      // console.log(req.query);
     if (!_.has(req.query, 'indixify')) {
         var dbKey = await getdbKey(req.baseUrl, req.config)();
@@ -104,7 +108,6 @@ async function findAllWithPaging(req, res) {
             // };
             // res.status(200).json(returnObj);
         }).then((data)=>{
-            // console.log(data);
             const returnObj = {
                 count: data.count,
                 next: offset + 1,
@@ -139,6 +142,9 @@ async function findAllWithPaging(req, res) {
             status : 'success',
             results: _.indexify(data,'id','name')
         };
+
+       
+
         res.status(200).json(returnObj);
     }
 }
