@@ -14,6 +14,7 @@
         "bookingcomments": "bookingComments",
         "rentalpackages": "rentalPackage",
         "userauditlogs": "userAuditLogs",
-        "blockedvehicles": "blockedVehicles"
+        "blockedvehicles": "blockedVehicles",
+        "vehicles": "vehicles"
     }
 }
