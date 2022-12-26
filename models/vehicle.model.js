@@ -1,80 +1,173 @@
 const { DataTypes } = require('sequelize');
 
-
 module.exports = (sequelize, Sequelize) => {
-    const customer = sequelize.define("vehicles", {
-        id: {
+	const customer = sequelize.define("vehicles", {
+		id: {
 			allowNull: false,
 			autoIncrement: true,
 			primaryKey: true,
 			type: DataTypes.INTEGER
 		},
-        name: {
+		name: {
 			allowNull: true,
 			type: DataTypes.STRING,
-            field : 'name'
+			field: 'name'
 		},
-        registration_no: {
+		registration_no: {
 			allowNull: true,
-			type: DataTypes.DATE,
-            field : 'registration_no'
+			type: DataTypes.STRING,
+			field: 'registration_no'
 		},
-        seating_capacity: {
+		engine_no: {
+			allowNull: true,
+			type: DataTypes.STRING,
+			field: 'engine_no'
+		},
+		chassis_no: {
+			allowNull: true,
+			type: DataTypes.STRING,
+			field: 'chassis_no'
+		},
+		seating_capacity: {
 			allowNull: true,
 			type: DataTypes.INTEGER,
-            field : 'seating_capacity'
+			field: 'seating_capacity'
 		},
-        vehicle_make: {
+		vehicle_type: {
 			allowNull: true,
 			type: DataTypes.INTEGER,
-            field : 'vehicle_make'
+			field: 'vehicle_type'
+		},
+		vehicle_make: {
+			allowNull: true,
+			type: DataTypes.INTEGER,
+			field: 'vehicle_make'
 		},
 		vehicle_variant: {
 			allowNull: true,
 			type: DataTypes.INTEGER,
-            field : 'vehicle_variant'
+			field: 'vehicle_variant'
 		},
-        vehicle_model: {
+		vehicle_model: {
 			allowNull: true,
 			type: DataTypes.INTEGER,
-            field : 'vehicle_model'
+			field: 'vehicle_model'
 		},
-        transmission_type: {
+		registration_date: {
+			allowNull: true,
+			type: DataTypes.DATE,
+			field: 'registration_date'
+		},
+		on_road_date: {
+			allowNull: true,
+			type: DataTypes.DATE,
+			field: 'on_road_date'
+		},
+		vendor_id: {
 			allowNull: true,
 			type: DataTypes.INTEGER,
-            field : 'transmission_type'
+			field: 'vendor_id'
 		},
-        body_type: {
+		transmission_type: {
 			allowNull: true,
 			type: DataTypes.INTEGER,
-            field : 'body_type'
+			field: 'transmission_type'
 		},
-        fuel_type: {
+		body_type: {
+			allowNull: true,
+			type: DataTypes.INTEGER,
+			field: 'body_type'
+		},
+		fuel_type: {
 			allowNull: true,
 			type: DataTypes.STRING,
-            field : 'fuel_type'
+			field: 'fuel_type'
 		},
-        vehiclegroup_id: {
+		vehiclegroup_id: {
 			allowNull: true,
 			type: DataTypes.INTEGER,
-            field : 'vehiclegroup_id'
+			field: 'vehiclegroup_id'
 		},
 		cityId: {
 			allowNull: true,
 			type: DataTypes.INTEGER,
-            field : 'city_id'
+			field: 'city_id'
 		},
-		currentStatus :{
+		currentStatus: {
 			allowNull: true,
 			type: DataTypes.STRING,
-            field : 'current_status'
-		}
-    },{
-        timestamps : false
-    });
-  
-    return customer;
-  };
+			field: 'current_status'
+		},
+		hub_id : {
+			allowNull: true,
+			type: DataTypes.INTEGER,
+			field: 'hub_id'
+		},
+		tenant_id: {
+			allowNull: true,
+			type: DataTypes.INTEGER,
+			field: 'tenant_id'
+		},
+		vehicle_status  : {
+			allowNull: true,
+			type: DataTypes.INTEGER,
+			field: 'vehicle_status'
+		},
+		onboarding_odometer: {
+			allowNull: true,
+			type: DataTypes.STRING,
+			field: 'onboarding_odometer'
+		},
+		is_deleted : {
+			allowNull: true,
+			type: DataTypes.TINYINT,
+			field: 'is_deleted'
+		},
+		manufactured_year: {
+			allowNull: true,
+			type: DataTypes.STRING,
+			field: 'manufactured_year'
+		},
+		current_odometer : {
+			allowNull: true,
+			type: DataTypes.INTEGER,
+			field: 'current_odometer'
+		},
+		registration_state: {
+			allowNull: true,
+			type: DataTypes.INTEGER,
+			field: 'registration_state'
+		},
+		profile_photo_url : {
+			allowNull: true,
+			type: DataTypes.STRING,
+			field: 'profile_photo_url'
+		},
+		createdBy: {
+            allowNull: true,
+            type: DataTypes.BIGINT,
+            field: 'created_by'
+        },
+        modifiedBy: {
+            allowNull: true,
+            type: DataTypes.BIGINT,
+            field: 'modified_by'
+        },
+        modifiedOn: {
+            allowNull: true,
+            type: `TIMESTAMP`,
+            field: 'modified_on'
+        },
+        createdOn: {
+            allowNull: true,
+            type: `TIMESTAMP`,
+            field: 'created_on'
+        }
+	}, {
+		timestamps: false
+	});
+
+	return customer;
+};
 
 
-  

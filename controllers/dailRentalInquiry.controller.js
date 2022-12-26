@@ -167,6 +167,11 @@ exports.fetchRentalDetails = (req, res) => {
             endDate: moment(req.body.endDate).format('YYYY-MM-DD'),
             endTime: moment(req.body.endDate).format('HH:mm')
         };
+        console.log('fsadfasfas');
+    return fetchPeakDays(startDateObject, endDateObject, db).then((resp) => {
+        return res.json(resp);
+    })
+
     return (db.rentalPackage).findAll({
         where: {
             vehiclegroup_id: {
@@ -186,10 +191,10 @@ exports.fetchRentalDetails = (req, res) => {
         }));
 
         // res.status(200).json(resp);
-    }).then((resp)=>{
+    }).then((resp) => {
         // console.log(resp);
         returnObj.otherInfo = _.indexify(resp, 'vehiclegroup_id');
-        res.status(200).json(returnObj); 
+        res.status(200).json(returnObj);
     });
 
 }
@@ -776,7 +781,7 @@ function fetchVehicleDetails(whereCondition, database, req, busyOnes) {
 }
 
 function fetchPeakDays(startDateObject, endDateObject, database) {
-    return database.peakhrs.findAll({
+    return database.peakSeasonsRental.findAll({
         limit: 100
     }).then((peakhrList) => {
         peakhrList = _.map(peakhrList, 'dataValues');

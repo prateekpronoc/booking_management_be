@@ -125,6 +125,7 @@ require(`./routes/rental-packages/rentalPackage.routes`)(app);
 require(`./routes/user-audit-logs/userAuditLogs.routes`)(app);
 require(`./routes/daily-rental/fleetAvailability.routes`)(app);
 require(`./routes/blocked-vehicles/blockedVehicles.routes`)(app);
+require(`./routes/vehicles/vehicles.routes`)(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 9091;
