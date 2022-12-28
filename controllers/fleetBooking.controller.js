@@ -8,7 +8,7 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
-    let responseObject= {};
+    let responseObject = {};
     var date = moment().hours(0).minutes(0).seconds(0).milliseconds(0).toDate(), code;
     (db.fleetBookingSeq).create({ created_on: date }).then((resp) => {
         code = 'WCBLRINQ';
@@ -22,9 +22,19 @@ exports.create = (req, res) => {
         // res.status(200).json(code);
     }).then((resp) => {
         responseObject = resp;
-        console.log(resp);
-        return (db.bookingComments).create({comment:req.body.comment,commentedBy:req.body.commentedBy,bookingId : resp.id,createdBy: req.body.createdBy});
+        // console.log(resp);
+        return (db.bookingComments).create({ comment: req.body.comment, commentedBy: req.body.commentedBy, bookingId: resp.id, createdBy: req.body.createdBy });
         // res.status(200).json(resp);
+    }).then((resp) => {
+       
+        if (_.has(req.body, 'bookingHistoryObject')) {
+            req.body.bookingHistoryObject.bookingId= responseObject.id;
+            // console.log(responseObject.dataValues);
+            req.body.bookingHistoryObject.bookingCode = (responseObject.dataValues).inquiryCode;
+            return (db.bookingHistory).create(req.body.bookingHistoryObject);
+        }
+       
+        return responseObject;
     }).then((resp)=>{
         return res.status(200).json(responseObject);
     });
@@ -40,14 +50,14 @@ exports.create = (req, res) => {
     // });
 };
 
-exports.update= (req,res)=>{
-   return updateBooking(req,res).then((resp)=>{
-        if(resp){
+exports.update = (req, res) => {
+    return updateBooking(req, res).then((resp) => {
+        if (resp) {
             res.status(200).send({
-            message: "Booking was updated successfully.",
-            data : resp
-          });
-        }else{
+                message: "Booking was updated successfully.",
+                data: resp
+            });
+        } else {
 
         }
     });
@@ -56,32 +66,32 @@ exports.update= (req,res)=>{
 async function updateBooking(req, res) {
     // const id = getIdParam(req);
 
-	// We only accept an UPDATE request if the `:id` param matches the body `id`
-	// if (req.body.id === id) {
-	var fleetBooking	=await (db.fleetBooking).update(req.body, {
-			where: {
-				id: req.body.id
-			}
-		});
-        return fleetBooking;
-		// res.status(200).send({
-        //     message: "Booking was updated successfully."
-        //   });
-	// } else {
-        
-	// 	res.status(400).send(`Bad request: param ID (${id}) does not match body ID (${req.body.id}).`);
-	// }
+    // We only accept an UPDATE request if the `:id` param matches the body `id`
+    // if (req.body.id === id) {
+    var fleetBooking = await (db.fleetBooking).update(req.body, {
+        where: {
+            id: req.body.id
+        }
+    });
+    return fleetBooking;
+    // res.status(200).send({
+    //     message: "Booking was updated successfully."
+    //   });
+    // } else {
+
+    // 	res.status(400).send(`Bad request: param ID (${id}) does not match body ID (${req.body.id}).`);
+    // }
 }
 
 exports.findAll = (req, res) => {
     const limit = req.query.pageSize ? +(req.query.pageSize) : 20;
-	// const offset = const limit = size ? +size : 3;
-	const offset = req.query.page ? req.query.page * limit : 0;
-    (db.fleetBooking).findAndCountAll({ limit:limit, offset : offset ,order:[['id','DESC']]})
+    // const offset = const limit = size ? +size : 3;
+    const offset = req.query.page ? req.query.page * limit : 0;
+    (db.fleetBooking).findAndCountAll({ limit: limit, offset: offset, order: [['id', 'DESC']] })
         .then(data => {
             const returnObj = {
                 count: data.count,
-                next: data.count>= limit ? 0: offset + 1,
+                next: data.count >= limit ? 0 : offset + 1,
                 previous: offset - 1,
                 results: data.rows
             };
@@ -96,22 +106,22 @@ exports.findAll = (req, res) => {
 
 };
 
-exports.findOne=(req,res)=>{
+exports.findOne = (req, res) => {
     const id = req.params.id;
 
     (db.fleetBooking).findByPk(id)
-      .then(data => {
-        if (data) {
-          res.status(200).json({status:'success',data:data});
-        } else {
-          res.status(404).send({
-            message: `Cannot find booking with id=${id}.`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error retrieving booking with id=" + id
+        .then(data => {
+            if (data) {
+                res.status(200).json({ status: 'success', data: data });
+            } else {
+                res.status(404).send({
+                    message: `Cannot find booking with id=${id}.`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Error retrieving booking with id=" + id
+            });
         });
-      });
 }
