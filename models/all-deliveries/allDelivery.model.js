@@ -54,7 +54,22 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
             type: DataTypes.STRING,
             field: 'status'
-        }
+        },
+        booking_start_date: {
+            allowNull: true,
+            type: DataTypes.DATE,
+            field: 'booking_start_date'
+        },
+        customerName: {
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'customer_name'
+        },
+        customerContactNo: {
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'customer_contact_no'
+        },
 
     }, {
         timestamps: false
