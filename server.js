@@ -127,6 +127,7 @@ require(`./routes/daily-rental/fleetAvailability.routes`)(app);
 require(`./routes/blocked-vehicles/blockedVehicles.routes`)(app);
 require(`./routes/vehicles/vehicles.routes`)(app);
 require(`./routes/booking-history/bookingHistory.routes`)(app);
+require(`./routes/all-delivery/allDelivery.routes`)(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 9091;
 app.listen(PORT, () => {

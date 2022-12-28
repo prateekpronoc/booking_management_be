@@ -16,6 +16,7 @@
         "userauditlogs": "userAuditLogs",
         "blockedvehicles": "blockedVehicles",
         "vehicles": "vehicles",
-        "bookinghistory" :"bookingHistory"
+        "bookinghistory" :"bookingHistory",
+        "alldelivery":"allDelivery"
     }
 }

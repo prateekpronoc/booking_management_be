@@ -55,4 +55,5 @@ db.tempBookings = require(`./temp-bookings/tempBookings.model`)(sequelize, Seque
 db.userAuditLogs = require(`./user-audit-logs/userAuditLogs.model`)(sequelize, Sequelize);
 db.blockedVehicles = require(`./blocked-vehicles/blockedVehicles.model`)(sequelize, Sequelize);
 db.bookingHistory = require(`./booking-history/booking-history.model`)(sequelize, Sequelize);
+db.allDelivery = require('./all-deliveries/allDelivery.model')(sequelize,Sequelize);
 module.exports = db;

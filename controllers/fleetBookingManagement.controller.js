@@ -5,6 +5,7 @@ const { getIdParam } = require('./helper');
 const Op = db.Sequelize.Op;
 const crypto = require('crypto');
 const { sequelize}  = require('sequelize');
+const c = require("config");
 
 
 async function initiateBooking(req, res) {
@@ -35,6 +36,7 @@ async function initiateBooking(req, res) {
             
             const tempBookingData = await (db.tempBookings).create(req.body.tempBookingObject,{transactional:transactional});
 
+            const bookingHistory = await (db.bookingHistory).create(req.body.bookingHistoryObject,{transactional:transactional});
            
 
             return res.status(200).send(bookingData);
