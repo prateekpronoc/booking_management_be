@@ -55,7 +55,7 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.STRING,
             field: 'status'
         },
-        booking_start_date: {
+        bookingStartDate: {
             allowNull: true,
             type: DataTypes.DATE,
             field: 'booking_start_date'
@@ -70,7 +70,31 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.STRING,
             field: 'customer_contact_no'
         },
-
+        cityId : {
+            allowNull: true,
+            type: DataTypes.BIGINT,
+            field: 'city_id'
+        },
+        cityName : {
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'city_name'
+        },
+        hubId : {
+            allowNull: true,
+            type: DataTypes.BIGINT,
+            field: 'hub_id'
+        },
+        hubName : {
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'hub_name'
+        },
+        startingOdometer :{
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'starting_odometer'
+        }
     }, {
         timestamps: false
     });
