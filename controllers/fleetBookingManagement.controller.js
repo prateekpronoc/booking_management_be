@@ -41,6 +41,13 @@ async function initiateBooking(req, res) {
             req.body.deliveryObject.bookingCode = req.body.bookingCode;
             const bookingDelivery = await (db.allDelivery).create(req.body.deliveryObject, { transactional: transactional });
 
+            let trackingObject = {
+                bookingCode : req.body.bookingCode,
+                destinationAddress : req.body.deliveryObject.deliveryAddress
+            };
+
+            const bookingDeliveryTracking = await (db.fleetDeliveryTracking).create(trackingObject, { transactional: transactional });
+
             return res.status(200).send(bookingData);
         });
         console.log('success');

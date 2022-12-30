@@ -56,4 +56,5 @@ db.userAuditLogs = require(`./user-audit-logs/userAuditLogs.model`)(sequelize, S
 db.blockedVehicles = require(`./blocked-vehicles/blockedVehicles.model`)(sequelize, Sequelize);
 db.bookingHistory = require(`./booking-history/booking-history.model`)(sequelize, Sequelize);
 db.allDelivery = require('./all-deliveries/allDelivery.model')(sequelize,Sequelize);
+db.fleetDeliveryTracking = require(`./booking-delivery-tracking/bookingDeliveryTracking.model`)(sequelize,Sequelize);
 module.exports = db;
