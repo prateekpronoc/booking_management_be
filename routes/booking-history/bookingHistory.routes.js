@@ -4,6 +4,7 @@ module.exports = app => {
     var router = require("express").Router();
 
     router.get('/', commonCtrl.findAllWithPaging);
+    router.post('/',commonCtrl.saveData);
   
      app.use('/booking_be/bookinghistory', router);
   };
