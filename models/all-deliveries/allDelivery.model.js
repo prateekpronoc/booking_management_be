@@ -94,6 +94,31 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
             type: DataTypes.STRING,
             field: 'starting_odometer'
+        },
+        fuelPoint :{
+            allowNull:true,
+            type: DataTypes.DOUBLE,
+            field :'fuel_point'
+        },
+        filePath :{
+            allowNull : true,
+            type : DataTypes.STRING,
+            field :'file_path'
+        },
+        vehicleId :{
+            allowNull : true,
+            type : DataTypes.BIGINT,
+            field :'vehicle_id'
+        },
+        vehicleName :{
+            allowNull : true,
+            type : DataTypes.STRING,
+            field :'vehicle_name'
+        },
+        registrationNo :{
+            allowNull : true,
+            type : DataTypes.STRING,
+            field :'registration_no'
         }
     }, {
         timestamps: false
