@@ -48,8 +48,19 @@ async function initiateBooking(req, res) {
             //     customerName : req.body.deliveryObject.customerName,
             //     customerMobileNo :req.body.deliveryObject.customerContactNo
             // };
-
-            // const bookingDeliveryTracking = await (db.fleetDeliveryTracking).create(trackingObject, { transactional: transactional });
+            req.body.trakingObject.bookingCode = req.body.bookingCode;
+            const bookingDeliveryTracking = await (db.fleetDeliveryTracking).create(req.body.trakingObject, { transactional: transactional });
+            console.log(bookingDeliveryTracking);
+            // http://139.59.57.10/track-delivery/?id=4
+            let trackingObj = {
+                generated_url: 'http://139.59.57.10/track-delivery/?id=' + bookingDeliveryTracking.dataValues.id
+            }
+            const updatedDeliveryTracking = await (db.fleetDeliveryTracking).update(trackingObj,
+                {
+                    where: {
+                        id: bookingDeliveryTracking.dataValues.id
+                    }
+                }, { transaction: transactional });
 
             return res.status(200).send(bookingData);
         });

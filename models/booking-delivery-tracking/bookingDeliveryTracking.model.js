@@ -49,7 +49,8 @@ module.exports = (sequelize) => {
         },
         generated_url: {
             allowNull: true,
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            field : 'generated_url'
         },
         customerName: {
             allowNull: false,
