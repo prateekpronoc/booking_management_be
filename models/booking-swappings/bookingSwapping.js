@@ -115,6 +115,11 @@ module.exports = (sequelize, Sequelize) => {
             type: `TIMESTAMP`,
             field: 'created_on'
         },
+        paymentType :{
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'payment_type'
+        }
     }, {
         timestamps: false
     });
