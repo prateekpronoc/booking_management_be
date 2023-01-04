@@ -156,10 +156,12 @@ async function test(req, res, next) {
 }
 
 async function getPlaces(req, res, next) {
+    // console.log('12312312312');
+    console.log(req.body.neighborhood);
 
     try {
-        const neighborhood = 'wowcarz'
-        // const borough = 'manhattan'
+        let neighborhood = req.body.neighborhood;
+        // console.log(neighborhood);       // const borough = 'manhattan'
         // const city = 'new+york+city'
         // const category = 'burgers'
         const {data} = await axios.get(

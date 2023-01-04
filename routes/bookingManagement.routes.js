@@ -27,6 +27,8 @@ module.exports = app => {
   
     // // Delete all Tutorials
     // router.delete("/", tutorials.deleteAll);
+
+    router.post('/closeinquiry', bookingManagementCtrl.closeInquiry)
   
      app.use('/booking_be/', router);
   };

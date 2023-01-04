@@ -790,3 +790,19 @@ function fetchPackageDetails(packageIds, database) {
         return Promise.resolve(resp);
     });
 }
+
+
+exports.closeInquiry = (req, res)=>{
+    return db.fleetBooking.update(req.body, {
+        where: {
+            id: req.body.id
+        }
+    }).then((resp)=>{
+        return (db.bookingComments).create({ comment: req.body.comment, commentedBy: req.body.commentedBy, bookingId: req.body.id, createdBy: req.body.createdBy });
+    }).then((resp)=>{
+        res.status(200).json({
+            status: "success",
+            entity: req.body
+        });
+    });
+}
