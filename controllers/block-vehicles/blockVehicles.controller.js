@@ -16,7 +16,7 @@ async function saveData(req, res) {
 
         let vehicleUpdateObject = {};
 
-        if(req.body.isUnbloced==0){
+        if(req.body.isUnblocked==0){
             vehicleUpdateObject.currentStatus = 'Blocked';
             vehicleUpdateObject.status = 0;
         }else{
