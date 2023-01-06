@@ -1,9 +1,9 @@
 module.exports = app => {
     const commonCtrl = require(`../../controllers/commonCtrl.controller`);
-   
+   const blockVehicleCtrl = require(`../../controllers/block-vehicles/blockVehicles.controller`);
     var router = require("express").Router();
     
-    router.post('/', commonCtrl.saveData);
+    router.post('/', blockVehicleCtrl.saveData);
 
     router.get('/', commonCtrl.findAllWithPaging);
 
