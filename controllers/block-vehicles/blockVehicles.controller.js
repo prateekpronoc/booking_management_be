@@ -10,44 +10,56 @@ async function saveData(req, res) {
 
     await (db.sequelize).transaction(async function (transactional) {
 
-        const blockVehicles = await (db.blockedVehicles).create(req.body, { transaction: transactional });
+        if (!_.has(req.body, 'id')) {
 
-        
+            const blockVehicles = await (db.blockedVehicles).create(req.body, { transaction: transactional });
 
-        let vehicleUpdateObject = {};
 
-        if(req.body.isUnblocked==0){
-            vehicleUpdateObject.currentStatus = 'Blocked';
-            vehicleUpdateObject.status = 0;
-        }else{
-            vehicleUpdateObject.currentStatus = 'Active';
-            vehicleUpdateObject.status = 1;
-        }
 
-        const vehicleUpdate = await (db.vehicles).update(vehicleUpdateObject, {
-            where: {
-                id: req.body.vehicleId
+            let vehicleUpdateObject = {};
+
+            if (req.body.isUnblocked == 0) {
+                vehicleUpdateObject.currentStatus = 'Blocked';
+                vehicleUpdateObject.status = 0;
+            } else {
+                vehicleUpdateObject.currentStatus = 'Active';
+                vehicleUpdateObject.status = 1;
             }
-        }, { transaction: transactional });
 
-        // const bookingUpdateObject = req.body.bookingObject;
-        // // bookingUpdateObject.endDate = req.body.endDate;
+            const vehicleUpdate = await (db.vehicles).update(vehicleUpdateObject, {
+                where: {
+                    id: req.body.vehicleId
+                }
+            }, { transaction: transactional });
 
-        // const bookingData = await (db.fleetBooking).update(bookingUpdateObject,
-        //     {
-        //         where: {
-        //             id: req.body.bookingId
-        //         }
-        //     }, { transaction: transactional });
+            return res.status(200).send(blockVehicles);
+        } else {
+            const blockVehicles = await (db.blockedVehicles).update(req.body, {
+                where: {
+                    id: req.body.id
+                }
+            }, { transaction: transactional });
 
-        // if (_.has(req.body, 'paymentObject')) {
 
-        //     const paymentData = await (db.bookingPayments).create(req.body.paymentObject, { transaction: transactional })
-        // }
 
-        // TODO: Update Vehicle Odometer Reading.....
+            let vehicleUpdateObject = {};
 
-        return res.status(200).send(blockVehicles);
+            if (req.body.isUnblocked == 0) {
+                vehicleUpdateObject.currentStatus = 'Blocked';
+                vehicleUpdateObject.status = 0;
+            } else {
+                vehicleUpdateObject.currentStatus = 'Active';
+                vehicleUpdateObject.status = 1;
+            }
+
+            const vehicleUpdate = await (db.vehicles).update(vehicleUpdateObject, {
+                where: {
+                    id: req.body.vehicleId
+                }
+            }, { transaction: transactional });
+
+            return res.status(200).send(blockVehicles);
+        }
     });
 }
 
