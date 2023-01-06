@@ -91,6 +91,9 @@ app.use(function (req, res, next) {
   next();
 });
 
+process.env.TZ = 'Asia/Kolkata';
+console.log(new Date());
+
 require('./routes/customer.routes')(app);
 require('./routes/dailyRentalInquiry.routes')(app);
 require('./routes/selfDriveBooking.routes')(app);

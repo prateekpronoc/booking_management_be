@@ -104,6 +104,11 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
             type: DataTypes.TINYINT,
             field: 'is_unblocked'
+        },
+        agentEmail :{
+            allowNull: true,
+            type: DataTypes.STRING,
+            field: 'agent_email'
         }
     }, {
         timestamps: false
