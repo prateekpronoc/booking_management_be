@@ -57,4 +57,7 @@ db.blockedVehicles = require(`./blocked-vehicles/blockedVehicles.model`)(sequeli
 db.bookingHistory = require(`./booking-history/booking-history.model`)(sequelize, Sequelize);
 db.allDelivery = require('./all-deliveries/allDelivery.model')(sequelize,Sequelize);
 db.fleetDeliveryTracking = require(`./booking-delivery-tracking/bookingDeliveryTracking.model`)(sequelize,Sequelize);
+
+db.bookingConfig = require(`./booking-config/bookingConfig.model`)(sequelize,Sequelize);
+
 module.exports = db;
