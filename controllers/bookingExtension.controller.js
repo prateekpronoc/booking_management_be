@@ -27,6 +27,13 @@ async function saveData(req, res) {
             const paymentData = await (db.bookingPayments).create(req.body.paymentObject, { transaction: transactional })
         }
 
+        const tempBookingData = await (db.tempBookings).update(req.body.tempBookingObject,
+            {
+                where: {
+                    bookingId: req.body.bookingId
+                }
+            }, { transaction: transactional });
+
 
         // TODO: Update Vehicle Odometer Reading.....
 
