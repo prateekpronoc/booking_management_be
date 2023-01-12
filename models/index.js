@@ -59,5 +59,6 @@ db.allDelivery = require('./all-deliveries/allDelivery.model')(sequelize,Sequeli
 db.fleetDeliveryTracking = require(`./booking-delivery-tracking/bookingDeliveryTracking.model`)(sequelize,Sequelize);
 
 db.bookingConfig = require(`./booking-config/bookingConfig.model`)(sequelize,Sequelize);
+db.customerDocuments = require(`./customer-documents/customerDocuments.model`)(sequelize,Sequelize);
 
 module.exports = db;

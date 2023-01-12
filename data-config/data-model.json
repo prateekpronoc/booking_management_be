@@ -18,6 +18,7 @@
         "vehicles": "vehicles",
         "bookinghistory": "bookingHistory",
         "alldelivery": "allDelivery",
-        "bookingconfig": "bookingConfig"
+        "bookingconfig": "bookingConfig",
+        "customerdocuments" :"customerDocuments"
     }
 }
