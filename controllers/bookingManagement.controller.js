@@ -76,6 +76,7 @@ async function getEntityById(entityName, whereCondition) {
 
 
 exports.rentcalculator = (req, res) => {
+    console.log('This is Not an Actual Rental Details!!!!');
     var returnObj = {},
         peakdayList = [], securityDeposit = 0;
     var packageVehicles;
@@ -95,7 +96,7 @@ exports.rentcalculator = (req, res) => {
         securityDeposit = resp.securityDeposit;
         return fetchPeakDays(startDateObject, endDateObject, db)
     }).then((resp) => {
-        console.log(resp);
+        // console.log(resp);
         peakdayList = resp;
         return (db.rentalPackage).findAll();
     }).then((resp) => {
@@ -173,8 +174,8 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
             packageDetail.testingValue = 'Im Testing Same Day';
             return calculateSameDayRent(startDateObject, endDateObject, packageDetail).then((costConfiguration) => {
                 costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr), 2);
-                costConfiguration.weekEndHrs = _.round(costConfiguration.weekEndHrs, 2);
-                costConfiguration.weekDayHrs = _.round(costConfiguration.weekDayHrs, 2);
+                costConfiguration.weekEndHrs = _.round(costConfiguration.weekEndHrs);
+                costConfiguration.weekDayHrs = _.round(costConfiguration.weekDayHrs);
                 costConfiguration.weekendRent = _.round((costConfiguration.weekendTariff) *
                     costConfiguration.weekEndHrs);
                 // costConfiguration.totalRent += _.round(costConfiguration.weekdayRent, 2);
@@ -209,25 +210,24 @@ function calculateTripCost(packageDetail, startDateObject, endDateObject, peakda
             }).then(function (costConfiguration) {
                 costConfiguration.weekendTariff = _.round(((costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr), 2);
                 // costConfiguration.weekendTariff = (costConfiguration.cost_per_hr * costConfiguration.weekend_cost / 100) + costConfiguration.cost_per_hr;
-                costConfiguration.weekEndHrs = _.round(costConfiguration.weekEndHrs, 2);
-                costConfiguration.weekDayHrs = _.round(costConfiguration.weekDayHrs, 2);
+                costConfiguration.weekEndHrs = _.round(costConfiguration.weekEndHrs);
+                costConfiguration.weekDayHrs = _.round(costConfiguration.weekDayHrs);
                 costConfiguration.weekendRent = _.round((costConfiguration.weekendTariff) *
                     costConfiguration.weekEndHrs);
                 // costConfiguration.totalRent += _.round(costConfiguration.weekdayRent, 2);
-                costConfiguration.noOfWeekends = _.round((costConfiguration.weekEndHrs / 24), 2);
+                costConfiguration.noOfWeekends = _.round((costConfiguration.weekEndHrs / 24));
 
                 costConfiguration.weekdayRent = _.round((costConfiguration.cost_per_hr) *
                     costConfiguration.weekDayHrs);
                 //console.log(costConfiguration.weekendTariff);
                 // costConfiguration.totalRent += _.round(costConfiguration.weekdayRent, 2);
-                costConfiguration.noOfWeekday = _.round((costConfiguration.weekDayHrs / 24), 2);
-                costConfiguration.totalRent = _.round((costConfiguration.weekendRent + costConfiguration.weekdayRent));
+                costConfiguration.noOfWeekday = _.round((costConfiguration.weekDayHrs / 24));
+                // costConfiguration.totalRent = _.round((costConfiguration.weekendRent + costConfiguration.weekdayRent));
                 // costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
                 costConfiguration.totalTripDurationInHrs = _.round(costConfiguration.weekEndHrs + costConfiguration.weekDayHrs);
                 costConfiguration.totalTripDurationInDays = _.round((costConfiguration.weekEndHrs + costConfiguration
                     .weekDayHrs) / 24);
-                costConfiguration.totalFreeKms = _.round((costConfiguration.km_per_hr) * costConfiguration.totalTripDurationInHrs,
-                    2);
+                costConfiguration.totalFreeKms = _.round((costConfiguration.km_per_hr) * costConfiguration.totalTripDurationInHrs);
 
 
                 return calculateCost(startDateObject, endDateObject, costConfiguration, peakdayList).then(function (costConfiguration) {
@@ -432,92 +432,18 @@ function calculateCost(startDateObject, endDateObject, costConfiguration, peakda
         // let peakSeasonCost =
         costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent + (costConfiguration.weekdayRent * peakdayList.peakRentalCharges / 100));
         costConfiguration.weekendRent = _.round(costConfiguration.weekendRent + (costConfiguration.weekendRent * peakdayList.peakRentalCharges / 100));
-
-        //Conditon 1 : if peak start date is between booking start and end date
-        //condition 2 : if peak end date is between booking start and end date
-        //condition 3 : if booking start and end date between peak start date and end date
-        ////console.log(costConfiguration);
-        //console.log('peakdayList');
-        // if (moment(peakdayList.startDate).isBetween(pStartDate, pEndDate, undefined,
-        //     '[]')) {
-        //     // //console.log(1);
-        //     costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.peakRentalCharges);
-        //     costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.peakRentalCharges);
-
-        //     costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
-        // } else if (moment(peakdayList.endDate).isBetween(pStartDate, pEndDate, undefined,
-        //     '[]')) {
-        //     var endDiff = moment(pEndDate).diff(peakdayList.endDate, 'hours');
-        //     var startDiff = moment(peakdayList.endDate).diff(pStartDate, 'hours');
-
-        //     if (startDiff >= 18 && endDiff <= 24) {
-        //         //console.log('In between!!!');
-        //         costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.peakRentalCharges);
-        //         costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.peakRentalCharges);
-        //         costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
-        //     }
-        // } else if (moment(pStartDate).isBetween(moment(peakdayList.startDate), moment(peakdayList.endDate), undefined,
-        //     '[]') && moment(pEndDate).isBetween(moment(peakdayList.startDate), moment(peakdayList.endDate), undefined,
-        //         '[]')) {
-        //     //console.log(3);
-        //     costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.peakRentalCharges);
-        //     costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.peakRentalCharges);
-        //     costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
-        // } else {
-        //     //console.log('Others!!!!');
-        //     costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * peakdayList.peakRentalCharges);
-        //     costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * peakdayList.peakRentalCharges);
-        //     costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
-        // }
-
-
-
-
-
+        costConfiguration.totalRent = costConfiguration.weekdayRent + costConfiguration.weekendRent;
+    } else {
+        costConfiguration.totalRent = costConfiguration.weekdayRent + costConfiguration.weekendRent;
     }
 
-    //In between
-    // if (moment('2021-01-26').isBetween(pStartDate, pEndDate, undefined,
-    //     '[]')) {
 
-    //   // //console.log(costConfiguration.weekendTariff);
-    //   // //console.log('-------------------------------------');
-
-    //   costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * 1.5);
-    //   costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * 1.5);
-    //   costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
-    // }
-
-    //Start Date is Same 
-
-    //  if (moment('2021-01-26').isSame(pStartDate)) {
-    //   //console.log('startdate');
-    //    costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * 1.5);
-    //    costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * 1.5);
-    //    costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
-    //  }
-
-
-    //  // End Date is Same
-    // else if (moment('2021-01-26').isSame(pEndDate)) {
-    //  //console.log('enddate');
-    //    costConfiguration.weekdayRent = _.round(costConfiguration.weekdayRent * 1.5);
-    //    costConfiguration.weekendRent = _.round(costConfiguration.weekendRent * 1.5);
-    //    costConfiguration.totalRent = costConfiguration.weekendRent + costConfiguration.weekdayRent;
-    //  }
-
-    // if (moment(pEndDate).isSame(startDateObject.startDate)) {
-    //   return peakhr;
-    // }
-
-    // if (moment(pEndDate).isSame(endDateObject.endDate)) {
-    //   return peakhr;
-    // }
-    // //console.log(costConfiguration);
 
     costConfiguration.totalHrs = _.round(costConfiguration.weekDayHrs + costConfiguration.weekEndHrs);
     costConfiguration.securityDeposit = securityDeposit;
+
     costConfiguration.discountPercentage = costConfiguration.discountPercentage || 0;
+
     costConfiguration.totalAmountAfterDiscount = costConfiguration.discountPercentage == 0 ? costConfiguration
         .totalRent :
         costConfiguration.totalRent - (costConfiguration.totalRent * costConfiguration.discountPercentage /
@@ -526,14 +452,13 @@ function calculateCost(startDateObject, endDateObject, costConfiguration, peakda
         100, 2);
 
     costConfiguration.totalRentWithoutTax = costConfiguration.totalAmountAfterDiscount;
-    costConfiguration.totalRentWithTax = _.round(costConfiguration.totalRentWithoutTax + (costConfiguration
-        .totalRentWithoutTax *
-        28 / 100));
+    costConfiguration.totalRentWithTax = _.round(costConfiguration.totalRentWithoutTax + 
+        (costConfiguration.totalRentWithoutTax *14 / 100) + (costConfiguration.totalRentWithoutTax *14 / 100));
     costConfiguration.totalTripDurationInHrs = _.round(costConfiguration.weekEndHrs + costConfiguration.weekDayHrs);
     costConfiguration.extraFreeKm = costConfiguration.extraFreeKm || 0;
     costConfiguration.totalFreeKms = (costConfiguration.km_per_hr) * costConfiguration.totalTripDurationInHrs;
     costConfiguration.totalFreeKms = _.round(costConfiguration.totalFreeKms) + costConfiguration.extraFreeKm;
-    costConfiguration.taxAmount = _.round(costConfiguration.totalRentWithoutTax * 28 / 100);
+    costConfiguration.taxAmount = _.round(costConfiguration.totalRentWithoutTax * 14 / 100) + _.round(costConfiguration.totalRentWithoutTax * 14 / 100);
     costConfiguration.bookingLineItems = [];
     costConfiguration.bookingLineItems.push({
         name: 'Weekday Charges',
@@ -792,14 +717,14 @@ function fetchPackageDetails(packageIds, database) {
 }
 
 
-exports.closeInquiry = (req, res)=>{
+exports.closeInquiry = (req, res) => {
     return db.fleetBooking.update(req.body, {
         where: {
             id: req.body.id
         }
-    }).then((resp)=>{
+    }).then((resp) => {
         return (db.bookingComments).create({ comment: req.body.comment, commentedBy: req.body.commentedBy, bookingId: req.body.id, createdBy: req.body.createdBy });
-    }).then((resp)=>{
+    }).then((resp) => {
         res.status(200).json({
             status: "success",
             entity: req.body

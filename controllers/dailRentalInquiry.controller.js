@@ -155,6 +155,7 @@ exports.searchAll = (req, res) => {
 }
 
 exports.fetchRentalDetails = (req, res) => {
+    console.log('this is Actual Rental Details!!!')
     let offset = 0, limit = 10000;
     var returnObj = {},
         peakdayList;
